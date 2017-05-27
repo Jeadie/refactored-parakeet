@@ -32,6 +32,7 @@ void init_timer0(void);
 uint32_t get_clock_ticks(void);
 static volatile uint8_t uiunpaused_game;
 static volatile uint8_t SSD_digit_option;
+void set_clock_ticks(uint32_t clock);
 
 void toggle_timer_clock(void);
 

@@ -108,7 +108,9 @@ PosnType advance_snake_tail();
 */
 void set_snake_dirn(SnakeDirnType dirn);
 void reset_snake_drn(SnakeDirnType dirn);
-
+uint8_t get_snake_head_index(void);
+uint8_t get_snake_tail_index(void);
+SnakeDirnType get_current_drn(void); 
 /* is_snake_at(position)
 **
 ** Returns 1 if the given position is occupied by 

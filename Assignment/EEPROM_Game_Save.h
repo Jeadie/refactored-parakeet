@@ -21,7 +21,8 @@
 #define GAME_SCORE 0x1E0
 #define SNAKE_LENGTH 0x200
 #define CLOCK_TICKS 0x208
-#define SNAKE_POSITION_HEAD 0x218
+#define SNAKE_DIRECTION 0x218
+#define SNAKE_POSITION_TAIL 0x220
 
 void save_game_to_EPPROM(void);
 // void load_food_from_EEPROM(void);

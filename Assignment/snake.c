@@ -131,6 +131,16 @@ void set_snake_tail_pointer(uint8_t pointer){
 	snakeTailIndex = pointer; 
 }
 
+uint8_t get_snake_head_index(void){
+	return snakeHeadIndex;
+}
+uint8_t get_snake_tail_index(void){
+	return snakeTailIndex;
+}
+SnakeDirnType get_current_drn(void){
+	return curSnakeDirn; 
+}
+
 /* advance_snake_head()
 **
 ** Attempt to move snake head forward. Returns

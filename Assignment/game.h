@@ -12,7 +12,7 @@
 // Initialise game. This initialises the board with snake and food items
 // and initialises the display.
 void init_game(void);
-
+void set_game_speed(uint16_t new_speed); 
 // Attempt to move snake forward. If food is eaten it removes it, grows
 // the snake if possible and replaces the food item with a new one.
 // Display is updated as required. Returns true if successful, 

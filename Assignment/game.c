@@ -154,6 +154,10 @@ void reset_game_speed(void){
 	current_speed = 600;
 }
 
+void set_game_speed(uint16_t new_speed){
+	current_speed = new_speed;
+}
+
 
 
 

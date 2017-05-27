@@ -23,3 +23,7 @@ void add_to_score(uint16_t value) {
 uint32_t get_score(void) {
 	return score;
 }
+
+void set_score(uint32_t new_score){
+	score = new_score; 
+}

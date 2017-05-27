@@ -86,6 +86,15 @@ uint32_t get_clock_ticks(void) {
 	return return_value;
 }
 
+void set_clock_ticks(uint32_t clock){
+	uint8_t interrupts_were_on = bit_is_set(SREG, SREG_I);
+	cli();
+	clock_ticks =clock;
+	if(interrupts_were_on) {
+		sei();
+	}
+}
+
 /* Interrupt handler which fires when timer/counter 0 reaches 
  * the defined output compare value (every millisecond)
  */
