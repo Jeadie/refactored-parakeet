@@ -5,7 +5,6 @@
  *
  * Author: Peter Sutton. Modified by <Jack Eadie>
  */ 
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
@@ -47,9 +46,6 @@ void handle_new_lap(void);
 uint8_t load_EEPROM_data_on_next_game = 0; 
 
 // SSD for tens and ones place
-uint8_t seven_seg_for_tens[10] = {0,6,91,79,102,109,125,7,127,111};
-uint8_t seven_seg_for_ones[10] = { 63,6,91,79,102,109,125,7,127,111};
-
 
 /////////////////////////////// main //////////////////////////////////
 int main(void) {
@@ -58,6 +54,7 @@ int main(void) {
 	initialise_hardware();
 	DDRA = 0xff;
 	DDRD |= (1<<2);
+	DDRD &= ~(1<<3); 
 	
 	// Show the splash screen message. Returns when display
 	// is complete
@@ -102,17 +99,8 @@ void splash_screen(void) {
 	clear_terminal();
 	
 	hide_cursor();	// We don't need to see the cursor when we're just doing output
-	move_cursor(3,3);
-	printf_P(PSTR("Snake"));
+	display_start_terminal_screen();
 	
-	move_cursor(3,5);
-	set_display_attribute(FG_GREEN);	// Make the text green
-	// Modify the following line
-	printf_P(PSTR("CSSE2010/7201 Snake Project by Jack Eadie"));
-	// Return to default colour (White)
-	set_display_attribute(FG_WHITE);
-	display_EEPROM_high_score();
-
 	// Output the scrolling message to the LED matrix
 	// and wait for a push button to be pushed.
 	ledmatrix_clear();
@@ -171,7 +159,6 @@ void play_game(void) {
 	// and on a regular basis will move the snake forward.
 
 	while(1) {
-			display_SSD_value();
 			if(time_to_add_superfood()){
 				add_superfood_to_board();}
 			if(time_to_remove_superfood()){
@@ -274,35 +261,21 @@ void play_game(void) {
 }
 
 void handle_game_over() {
-	move_cursor(10,6);
-	// Print a message to the terminal. 
+	clear_terminal();
+	move_cursor(10,5);
 	printf_P(PSTR("GAME OVER"));
+	move_cursor(10,7);
 	printf("Score: %u", get_score());
 	display_EEPROM_high_score();
 
 	if (is_high_score()){
 		set_high_score_name();	
 	}
-	move_cursor(10,7);
+	move_cursor(10,9);
 	printf_P(PSTR("Press a button to start again"));
+	display_EEPROM_high_score(); 
 	while(button_pushed() == -1) {		
 		; // wait until a button has been pushed
 	}
-	
-}
-
-void display_SSD_value(){
-	//  1 is 10's space.
-	//  0 is 1's space.
-	
-	if ((get_clock_ticks()%2) == 1) {
-		PORTD |= (1<<2);
-		PORTA = seven_seg_for_tens[get_snake_length()/10];
-	}
-	else if ((get_clock_ticks()%2) ==0){
-		PORTD &= ~(1<<2);
-		PORTA = seven_seg_for_ones[get_snake_length()%10];
-	}
-	_delay_us(1);
-
+	clear_terminal(); 
 }

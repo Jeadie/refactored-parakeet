@@ -8,7 +8,7 @@
 
 #ifndef BUZZER_H_
 #define BUZZER_H_
-
+uint8_t sound_effects_on_mode(void);
 void reduce_buzzer_timer(void);
 void reset_buzzer(void);
 int buzzer_time_left(void);

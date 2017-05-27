@@ -61,12 +61,12 @@ void add_superfood_to_board(void){
 	// If we get here, we've found an unoccupied position (test_position)
 	// Add it to our list, display it, and return its ID.
 	superfood_position = test_position;
-	ledmatrix_update_pixel(x_position(superfood_position), y_position(superfood_position), COLOUR_YELLOW);
+	ledmatrix_update_pixel(x_position(superfood_position), y_position(superfood_position), COLOUR_ORANGE);
 	superfood_on_board = 1;
 }
 
 void remove_superfood_from_board(void){
-	ledmatrix_update_pixel(x_position(superfood_position), y_position(superfood_position), COLOUR_BLACK);
+	ledmatrix_update_pixel(x_position(superfood_position), y_position(superfood_position), COLOUR_ORANGE);
 	superfood_position = position(0,0);
 	superfood_on_board = 0; 
 }

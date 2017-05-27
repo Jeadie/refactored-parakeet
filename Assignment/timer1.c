@@ -21,9 +21,9 @@ void initialise_timer_one(void){
 		// TCCR1B |= 1<<CS12; // | (1<<CS10));
 		TCCR1B |= ((1<<CS11)  | (1<<WGM12)); //  | 1<<CS12; 
 		TCCR1A = 1<<COM1A0;
-		DDRD |= (1<<5);
 		OCR1A = 1000;
-
+		DDRD &= ~(1<<5); 
+		DDRD &= ~(1<<3); 
 }
 void change_timer_one_frequency(int new_frequency){
 	//  
@@ -42,3 +42,5 @@ void change_OCR1A(int new_OCR1A){
 	DDRD |= (1<<5); 
 	//  printf("enable Timer one \n");
  }
+ 
+ 

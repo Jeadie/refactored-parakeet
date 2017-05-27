@@ -52,7 +52,6 @@ void init_game(void) {
 	add_new_rat_position();
 	initialise_timer_one();
 	play_start_game_sound_effect();
-	
 	// Initialise the snake and display it. We know the initial snake is only
 	// of length two so we can just retrieve the tail and head positions
 	init_snake();
@@ -106,7 +105,9 @@ int8_t attempt_to_move_snake_forward(void) {
 		eat_superfood_from_board();
 		add_to_score(9);
 		increase_game_speed();
-		play_eating_food_sound_effect();	
+		
+		play_eating_food_sound_effect();
+
 	}
 	
 	if(move_result == ATE_RAT || move_result == ATE_RAT_BUT_CANT_GROW){
@@ -114,6 +115,7 @@ int8_t attempt_to_move_snake_forward(void) {
 		add_to_score(4);
 		increase_game_speed();
 		play_eating_food_sound_effect();
+
 	}
 		
 	// We don't remove the eaten food from the display since we'll just
@@ -139,41 +141,19 @@ int8_t attempt_to_move_snake_forward(void) {
 	return 1;
 }
 
-	void increase_game_speed(void){
-		current_speed *= 0.9; 
+void increase_game_speed(void){
+	if (get_current_game_speed()>250){
+		current_speed *= 0.90;
 	}
-	
-	int get_current_game_speed(void){
-		return current_speed;
-	}
-	void reset_game_speed(void){
-		current_speed = 600; 
-	}
-	
-	void update_terminal_score(void){
-		move_cursor(10,3);
-		char str[80];
-		
-		sprintf(str, "%u", get_score());
-		puts(str);
+}
 
-	}
-	
-void init_score_on_terminal(void){
-		
-		hide_cursor();
-		
-		move_cursor(10,1);
-		printf("Snake");
+int get_current_game_speed(void){
+	return current_speed;
+}
+void reset_game_speed(void){
+	current_speed = 600;
+}
 
-		move_cursor(1,3);
-		printf("Score: ");
-		move_cursor(10,3);
-	
-		char str[80];
-		
-		sprintf(str, "%u", get_score());
-		puts(str);
 
-	}
+
 
