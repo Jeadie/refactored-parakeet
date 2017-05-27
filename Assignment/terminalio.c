@@ -8,14 +8,14 @@
 #include <stdint.h>
 
 #include <avr/pgmspace.h>
-
+#include "score.h"
 #include "terminalio.h"
 
 
 
 
 void move_cursor(int8_t x, int8_t y) {
-    printf_P(PSTR("\x1b[%d;%dH"), y, x);
+   printf_P(PSTR("\x1b[%d;%dH"), y, x);
 }
 
 void normal_display_mode(void) {
@@ -86,4 +86,35 @@ void draw_vertical_line(int8_t x, int8_t start_y, int8_t end_y) {
 	}
 	printf(" ");
 	normal_display_mode();
+}
+
+void display_start_terminal_screen(void){
+	move_cursor(3,3);
+	printf_P(PSTR("Snake"));
+
+	move_cursor(3,5);
+	set_display_attribute(FG_GREEN);	// Make the text green
+	// Modify the following line
+	printf_P(PSTR("CSSE2010/7201 Snake Project by Jack Eadie"));
+	// Return to default colour (White)
+	set_display_attribute(FG_WHITE);
+	display_EEPROM_high_score();
+}
+
+void init_score_on_terminal(void){
+	
+	hide_cursor();
+	
+	move_cursor(10,1);
+	printf("Snake");
+
+	move_cursor(1,3);
+	printf("Score: 0", get_score());
+	move_cursor(10,3);
+}
+
+void update_terminal_score(void){
+	hide_cursor();
+	move_cursor(1,3);
+	printf("Score: %u", get_score());
 }

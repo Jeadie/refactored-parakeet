@@ -183,10 +183,15 @@ int8_t advance_snake_head(void) {
 
 	newHeadPosn = position(headX, headY);
 
+	if(curSnakeDirn != nextSnakeDirn){
 	/* Update the current direction */
 	curSnakeDirn = nextSnakeDirn;
-	// Change position to next head Position
 	
+	if(sound_effects_on_mode()){
+		 play_eating_food_sound_effect();
+	}
+	// Change position to next head Position
+	}
 
 	
 	/* ADD CODE HERE to check whether the new head position

@@ -4,10 +4,12 @@
  * Created: 22/05/2017 2:49:17 PM
  *  Author: Jack Eadie
  */ 
+#include <avr/io.h>
+#include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <stdio.h>
-#include <avr/io.h>
 #include "terminalio.h"
+
 #include "timer1.h"
 #include "Buzzer.h"
 #include "timer0.h"
@@ -21,8 +23,11 @@ uint32_t  clock_at_tone_start;
 int buzzer_pointer = -1;
 int buzzer_durations[5];
 int buzzer_OCR1A[5];
-int number_of_tones; 
+int number_of_tones;  
 
+uint8_t sound_effects_on_mode(void){
+	return (PIND & (1<<3)) != 0 ;
+}
 
 int buzzer_time_left(void){
 	if(get_clock_ticks() < (clock_at_tone_start + buzzer_time)){
@@ -68,6 +73,7 @@ void reset_buzzer(void){
 }
 
 void play_start_game_sound_effect(void){
+	
 	number_of_tones = 3;
 	buzzer_durations[0] = 500; 
 	buzzer_durations[1] = 200; 
@@ -78,7 +84,9 @@ void play_start_game_sound_effect(void){
 
 	buzzer_pointer = -1;
 	next_buzzer_tone(); 
-	enable_timer_one(); 
+	if(sound_effects_on_mode()){
+		enable_timer_one(); 
+	}
 }
 
 void play_snake_move_sound_effect(void){
@@ -86,7 +94,9 @@ void play_snake_move_sound_effect(void){
 		buzzer_OCR1A[0] = 2000;
 		buzzer_durations[0] = 50;
 		next_buzzer_tone();
-		enable_timer_one();
+		if(sound_effects_on_mode()){
+			enable_timer_one();
+		}		
 }
 
 
@@ -100,7 +110,9 @@ void play_eating_food_sound_effect(void){
 
 		buzzer_pointer = -1;
 		next_buzzer_tone();
-		enable_timer_one();
+		if(sound_effects_on_mode()){
+			enable_timer_one();
+		}
 }
 
 

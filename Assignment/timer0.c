@@ -11,6 +11,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "timer0.h"
+#include "snake.h"
+uint8_t SSD_CC_value = 1; 
+uint8_t seven_seg_for_tens[10] = {0,6,91,79,102,109,125,7,127,111};
+uint8_t seven_seg_for_ones[10] = { 63,6,91,79,102,109,125,7,127,111};
+
 
 /* Our internal clock tick count - incremented every 
  * millisecond. Will overflow every ~49 days. */
@@ -87,5 +92,21 @@ uint32_t get_clock_ticks(void) {
 ISR(TIMER0_COMPA_vect) {
 	// TODO: 
 	clock_ticks++;
+	display_SSD_value();
+}
+
+void display_SSD_value(){
+	//  1 is 10's space.
+	//  0 is 1's space.
+	
+	if (SSD_CC_value) {
+		PORTD |= (1<<2);
+		PORTA = seven_seg_for_tens[get_snake_length()/10];
+	}
+	else{
+		PORTD &= ~(1<<2);
+		PORTA = seven_seg_for_ones[get_snake_length()%10];
+	}
+	SSD_CC_value = 1-SSD_CC_value; 
 }
 

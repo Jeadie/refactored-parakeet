@@ -28,7 +28,7 @@ PosnType get_rat_position(void){
 void set_rat_at_pos(PosnType new_pos){
 	ledmatrix_update_pixel(x_position(rat_position), y_position(rat_position), COLOUR_BLACK);
 	rat_position = new_pos;
-	ledmatrix_update_pixel(x_position(new_pos), y_position(new_pos), COLOUR_ORANGE);
+	ledmatrix_update_pixel(x_position(new_pos), y_position(new_pos), COLOUR_LIGHT_YELLOW);
 
 }
 
