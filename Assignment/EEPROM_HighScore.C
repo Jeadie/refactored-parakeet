@@ -69,7 +69,7 @@ void set_high_score_name(void){
 		if(serial_input_available()) {
 			// Serial data was available - read the data from standard input
 			serial_input = fgetc(stdin);
-			if (serial_input>= 65 && serial_input <= 122 && score_name_pointer <=3){
+			if (serial_input>= 65 && serial_input <= 122 && score_name_pointer <=2){
 				move_cursor(10 + score_name_pointer, 9);
 				current_high_score_name[score_name_pointer] = serial_input;
 				printf("%c", serial_input);
@@ -92,7 +92,7 @@ void set_high_score_name(void){
 		}
 	}
 void handle_sequence_into_EEPFROM(){
-	eeprom_write_byte(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
+	eeprom_write_dword(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
 	switch(high_score_position()){
 		case SCORE_FOUR: move_four_place_down(); break; 
 		case SCORE_THREE: move_three_place_down(); break; 
@@ -149,7 +149,7 @@ void initialise_EEPROM(void){
 	reset_name_at_memory_position(NAME_THREE);
 	reset_name_at_memory_position(NAME_FOUR);
 	reset_name_at_memory_position(NAME_FIVE);
-	eeprom_write_byte(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
+	eeprom_write_dword(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
 	}
 	
 void reset_name_at_memory_position(uint16_t mem_pos){
@@ -160,7 +160,7 @@ void reset_name_at_memory_position(uint16_t mem_pos){
 
 
 int EEPROM_High_Score_has_been_initialised(void){
-	uint8_t current_signature = eeprom_read_byte(HIGHSCORE_SIGNATURE_MEMORY);
+	uint32_t current_signature = eeprom_read_dword(HIGHSCORE_SIGNATURE_MEMORY);
 	return (current_signature == HIGHSCORE_SIGNATURE);
 }
 

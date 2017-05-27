@@ -97,6 +97,10 @@ PosnType get_snake_head_position(void) {
 **
 ** Returns the position of the tail of the snake.
 */
+void reset_snake_drn(SnakeDirnType dirn){
+	curSnakeDirn = dirn;
+	nextSnakeDirn = dirn;
+}
 PosnType get_snake_tail_position(void) {
 	return snakePositions[snakeTailIndex];
 }
@@ -107,6 +111,24 @@ PosnType get_snake_tail_position(void) {
 */
 uint8_t get_snake_length(void) {
 	return snakeLength;
+}
+
+PosnType get_snake_position_at_index(uint8_t index) {
+	return snakePositions[index];
+}
+void set_snake_length(uint8_t length){
+	snakeLength = length;
+}
+
+void set_snake_position_in_array(PosnType pos, uint8_t index){
+	snakePositions[index] = pos; 
+}
+
+void set_snake_head_pointer(uint8_t pointer){
+	snakeHeadIndex = pointer; 
+}
+void set_snake_tail_pointer(uint8_t pointer){
+	snakeTailIndex = pointer; 
 }
 
 /* advance_snake_head()
@@ -344,7 +366,7 @@ int8_t is_snake_at(PosnType position) {
 	return 0;
 }
 PosnType* get_snake_in_order(void){
-	PosnType snake_order[get_snake_length()+1]; 
+	PosnType snake_order[get_snake_length()]; 
 	if (get_snake_tail_position()> get_snake_head_position()){
 		//SSSH-------------------------TSSS
 		int a = 0; 
@@ -357,7 +379,8 @@ PosnType* get_snake_in_order(void){
 			a++;
 		}
 	}else{
-		for(int i =get_snake_tail_position(); i<get_snake_head_position()+1; i++){
+		//  ---TSSSSSSH----
+		for(int i =get_snake_tail_position(); i<=get_snake_head_position(); i++){
 			snake_order[i-get_snake_tail_position()] = snakePositions[i];
 		}
 	}

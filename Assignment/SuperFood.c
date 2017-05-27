@@ -66,7 +66,7 @@ void add_superfood_to_board(void){
 }
 
 void remove_superfood_from_board(void){
-	ledmatrix_update_pixel(x_position(superfood_position), y_position(superfood_position), COLOUR_ORANGE);
+	ledmatrix_update_pixel(x_position(superfood_position), y_position(superfood_position), COLOUR_BLACK);
 	superfood_position = position(0,0);
 	superfood_on_board = 0; 
 }

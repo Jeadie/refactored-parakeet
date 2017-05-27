@@ -21,17 +21,18 @@
 #include <avr/eeprom.h>
 
 uint8_t EEPROM_has_saved_game(void){
-	uint8_t current_signature = eeprom_read_byte(SAVE_GAME_SIGNATURE_MEMORY); 
+	uint32_t current_signature = eeprom_read_dword(SAVE_GAME_SIGNATURE_MEMORY); 
 	return (current_signature == SAVE_GAME_SIGNATURE); 
 }
 
 void save_game_to_EPPROM(void){
 	cli();
 	// Save the Food Positions
-	eeprom_write_byte(SAVE_GAME_SIGNATURE_MEMORY, SAVE_GAME_SIGNATURE); 
+	eeprom_write_dword(SAVE_GAME_SIGNATURE_MEMORY, SAVE_GAME_SIGNATURE); 
 	eeprom_write_byte(FOOD_ONE, get_position_of_food(0));//  | (get_position_of_food(1) <<8) | (get_position_of_food(2)) <<16));
 	eeprom_write_byte(FOOD_TWO, get_position_of_food(1));
 	eeprom_write_byte(FOOD_THREE, get_position_of_food(2));
+	eeprom_write_byte(FOOD_FOUR, get_position_of_food(3));
 	
 	//  Save Rat Position and Superfood position if superfood is currently on. 
 	eeprom_write_byte(RAT, get_rat_position());
@@ -49,20 +50,48 @@ void save_game_to_EPPROM(void){
 	
 	// To increment after every snake position is saved
 	uint16_t current_snake_position_memory = 0; 
-	PosnType *ordered_snake; 
-	ordered_snake = get_snake_in_order();
 	
 	//  Add each PosnType of the orderedSnake. 
-	for(int i = 0; i< get_snake_length(); i++){
-		eeprom_write_byte(SNAKE_POSITION_HEAD + current_snake_position_memory, 
-								ordered_snake[i]);
-		i+=8; 
+	
+	if (get_snake_tail_position()> get_snake_head_position()){
+		//SSSH-------------------------TSSS
+		for (int i = get_snake_head_position(); i>=0; i--){
+			eeprom_write_byte(SNAKE_POSITION_HEAD + current_snake_position_memory, 
+							 get_snake_position_at_index(i));
+			current_snake_position_memory +=8;
+		}
+		for (int i = MAX_SNAKE_SIZE; i>= get_snake_tail_position(); i--){
+			eeprom_write_byte(SNAKE_POSITION_HEAD + current_snake_position_memory,
+			get_snake_position_at_index(i));
+			current_snake_position_memory +=8;
+		}
+		}else{
+		//  ---TSSSSSSH----
+		for(int i =get_snake_tail_position(); i<=get_snake_head_position(); i++){
+			eeprom_write_byte(SNAKE_POSITION_HEAD + current_snake_position_memory, get_snake_position_at_index(i));
+			current_snake_position_memory +=8;
+		}
 	}
+	
 	//  Add an invalid PosnType byte to signify the end of the snake positions. 
 	eeprom_write_byte(SNAKE_POSITION_HEAD + current_snake_position_memory,0x08);
-	
-		sei();
+	print_save_details();
+	sei();
 
+}
+void print_save_details(void){
+	printf("F1 :%u \n", eeprom_read_byte(FOOD_ONE));
+	printf("F2 :%u \n", eeprom_read_byte(FOOD_TWO));
+	printf("F3:%u \n", eeprom_read_byte(FOOD_THREE));
+	printf("F4 :%u \n", eeprom_read_byte(FOOD_FOUR));
+	printf("S1 :%u \n", eeprom_read_byte(SUPERFOOD));
+	printf("R1 :%u \n", eeprom_read_byte(RAT));
+	printf("Game Speed :%u \n", eeprom_read_word(GAME_SPEED));
+	printf("G Score :%lu \n", eeprom_read_dword(GAME_SCORE));  // not working
+	printf("Snake Length :%u \n", eeprom_read_byte(SNAKE_LENGTH));
+	printf("Snake Head :%u \n", eeprom_read_byte(SNAKE_POSITION_HEAD)); // not working
+	printf("G time :%lu \n", eeprom_read_dword(CLOCK_TICKS));
+	
 }
 
 void new_game_from_EEPROM(void){
@@ -101,7 +130,10 @@ void load_food_from_EEPROM(void){
 	add_food_to_board(food_two);
 	
 	PosnType food_three = eeprom_read_byte(FOOD_THREE);
-	add_food_to_board(food_three);
+	add_food_to_board(food_three);	
+	
+	PosnType food_four = eeprom_read_byte(FOOD_FOUR);
+	add_food_to_board(food_four);
 }
 
 void add_food_to_board(PosnType food_pos){
@@ -130,5 +162,42 @@ void load_superfood_from_EEPROM(void){
 }
 
 void load_snake_from_EPPROM(void){
-	
+	uint16_t snake_memory_position = SNAKE_POSITION_HEAD;
+	uint8_t snake_length  = eeprom_read_byte(SNAKE_LENGTH);
+	uint8_t snakePosition_index = 0; 
+	set_snake_head_pointer(0);
+	set_snake_tail_pointer(snake_length -1); 
+	do 
+	{
+		PosnType snake_position = eeprom_read_byte(snake_memory_position);
+		set_snake_position_in_array(snake_position, snakePosition_index); 
+		update_display_at_position(snake_position, COLOUR_GREEN);
+		snake_memory_position +=8; 
+		snakePosition_index ++; 
+		
+	} while (is_position_valid(eeprom_read_byte(snake_memory_position)));
+	update_display_at_position(get_snake_head_position(), COLOUR_RED);
+}
+
+void set_snake_direction(void){
+	PosnType head_node = get_snake_head_position();
+	PosnType first_body_node = get_snake_position_at_index(1); 
+	SnakeDirnType snake_direction; 
+	// Either up or down
+	if((x_position(head_node) -x_position(first_body_node)) ==0){
+		if((y_position(head_node) -y_position(first_body_node)) >0){
+			snake_direction = SNAKE_UP; 
+		}else{
+			snake_direction = SNAKE_DOWN; 
+		}
+			
+	}else{
+		//  Either Left or Right
+		if((x_position(head_node) -x_position(first_body_node)) >0){
+			snake_direction = SNAKE_RIGHT; 
+		}else{
+			snake_direction = SNAKE_LEFT; 
+		}
+	}
+	reset_snake_drn(snake_direction); 
 }

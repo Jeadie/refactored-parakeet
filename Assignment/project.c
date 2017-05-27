@@ -230,18 +230,17 @@ void play_game(void) {
 			toggle_timer_clock();
 		}else if(serial_input == 's'|| serial_input == 's'){
 			save_game_to_EPPROM();
-		}else if(serial_input == 'o' || serial_input == 'O'){
-			handle_game_over(); 
-// 			load_EEPROM_data_on_next_game = 1;
-// 			break;
+		}else if(EEPROM_has_saved_game() && (serial_input == 'o' || serial_input == 'O')){
+ 			load_EEPROM_data_on_next_game = 1;
+ 			break;
 		}
 	}else if(serial_input == 'p' || serial_input == 'P') {
 			toggle_timer_clock();
-		}else if(serial_input == 's'|| serial_input == 's'){
+		}else if(serial_input == 's'|| serial_input == 'S'){
 			save_game_to_EPPROM();
-		}else if(serial_input == 'o' || serial_input == 'O'){
+		}else if(EEPROM_has_saved_game() && (serial_input == 'o' || serial_input == 'O')){
 			load_EEPROM_data_on_next_game = 1;
-		break;
+			break;
 	}
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing

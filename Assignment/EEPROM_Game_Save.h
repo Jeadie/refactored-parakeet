@@ -9,18 +9,19 @@
 #ifndef EEPROM_GAME_SAVE_H_
 #define EEPROM_GAME_SAVE_H_
 #define SAVE_GAME_SIGNATURE 00011000
-#define SAVE_GAME_SIGNATURE_MEMORY 0x148
+#define SAVE_GAME_SIGNATURE_MEMORY 0x180
 
-#define FOOD_ONE 0x150
-#define FOOD_TWO 0x158
-#define FOOD_THREE 0x160
-#define RAT 0x168
-#define SUPERFOOD 0x170
-#define GAME_SPEED 0x178
-#define GAME_SCORE 0x188
-#define SNAKE_LENGTH 0x1A8
-#define CLOCK_TICKS 0x1B0
-#define SNAKE_POSITION_HEAD 0x1C0
+#define FOOD_ONE 0x1A0
+#define FOOD_TWO 0x1A8
+#define FOOD_THREE 0x1B0
+#define FOOD_FOUR 0x1B8
+#define RAT 0x1C0
+#define SUPERFOOD 0x1C8
+#define GAME_SPEED 0x1D0
+#define GAME_SCORE 0x1E0
+#define SNAKE_LENGTH 0x200
+#define CLOCK_TICKS 0x208
+#define SNAKE_POSITION_HEAD 0x218
 
 void save_game_to_EPPROM(void);
 // void load_food_from_EEPROM(void);

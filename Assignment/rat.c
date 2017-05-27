@@ -33,8 +33,7 @@ void set_rat_at_pos(PosnType new_pos){
 }
 
 uint8_t is_item_at(PosnType position){
-	if (is_snake_at(position) || is_food_at(position)
-	|| is_superfood_at(position)){
+	if (is_snake_at(position) || is_food_at(position)|| is_superfood_at(position)){
 		return 1;
 	}
 	return 0;
@@ -67,7 +66,7 @@ void move_rat(void){
 		}
 		attempts ++;
 		
-	} while (is_item_at(new_rat_pos) && attempts <4 && (rat_jumped_the_board(new_rat_pos)));
+	} while (is_item_at(new_rat_pos) && (attempts <4) && (rat_jumped_the_board(new_rat_pos)));
 	
 	if (attempts<=4){
 		set_rat_at_pos(new_rat_pos); 
@@ -85,10 +84,10 @@ uint8_t rat_jumped_the_board(PosnType new_pos){
 			return 0; 
 		}
 	// All four possible jumps
-	if ((rat_x ==0 && x_position(new_pos) == BOARD_WIDTH-1) ||
-		(rat_x == BOARD_WIDTH-1 && x_position(new_pos) == 0) ||
-		(rat_y==0 && y_position(new_pos) == BOARD_HEIGHT-1) ||
-		(rat_y == BOARD_HEIGHT-1 && y_position(new_pos) == 0)){
+	if ((rat_x ==0 && (x_position(new_pos) == BOARD_WIDTH-1)) ||
+		(rat_x == BOARD_WIDTH-1 && (x_position(new_pos) == 0)) ||
+		(rat_y==0 && (y_position(new_pos) == BOARD_HEIGHT-1)) ||
+		(rat_y == BOARD_HEIGHT-1 && (y_position(new_pos) == 0))){
 			return 1; 
 		}
 	return 1; 

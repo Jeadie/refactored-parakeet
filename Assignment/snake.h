@@ -12,6 +12,11 @@
 
 #include <inttypes.h>
 #include "position.h"
+void set_snake_length(uint8_t length);
+void set_snake_tail_pointer(uint8_t pointer);
+void set_snake_head_pointer(uint8_t pointer);
+void set_snake_position_in_array(PosnType pos, uint8_t index);
+PosnType get_snake_position_at_index(uint8_t index);
 
 #define MAX_SNAKE_SIZE 32
 
@@ -102,6 +107,7 @@ PosnType advance_snake_tail();
 ** value set before the snake is moved will be used.
 */
 void set_snake_dirn(SnakeDirnType dirn);
+void reset_snake_drn(SnakeDirnType dirn);
 
 /* is_snake_at(position)
 **
