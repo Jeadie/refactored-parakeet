@@ -109,12 +109,15 @@ void init_score_on_terminal(void){
 	printf("Snake");
 
 	move_cursor(1,3);
-	printf("Score: 0", get_score());
+	printf("Score:						       ", get_score());
+	
+	move_cursor(20-score_length(), 3);
+	printf("%u", get_score()); 
 	move_cursor(10,3);
 }
 
 void update_terminal_score(void){
 	hide_cursor();
-	move_cursor(1,3);
-	printf("Score: %u", get_score());
+	move_cursor(20-score_length(), 3);
+	printf("%u", get_score());
 }

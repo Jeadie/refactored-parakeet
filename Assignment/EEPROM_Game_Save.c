@@ -54,27 +54,27 @@ void save_game_to_EPPROM(void){
 	//  Add each PosnType of the orderedSnake. 
 	
 	if (get_snake_tail_index()> get_snake_head_index()){
-		printf("wrapped snake \n");
+		//printf("wrapped snake \n");
 		//SSSH-------------------------TSSS
 		for (int i = get_snake_tail_index(); i<=MAX_SNAKE_SIZE; i++){
 			eeprom_write_byte(SNAKE_POSITION_TAIL + current_snake_position_memory, 
 							 get_snake_position_at_index(i));
-			printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
+			//printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
 			current_snake_position_memory += 0x08;
 		}
 		for (int i = 0; i<= get_snake_head_index(); i++){
 			eeprom_write_byte(SNAKE_POSITION_TAIL + current_snake_position_memory,
 			get_snake_position_at_index(i));
-			printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
+			//printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
 			current_snake_position_memory +=0x08;
 		}
 		}else{
-			printf("straight Snake \n");
+			//printf("straight Snake \n");
 		//  ---TSSSSSSH----
 		for(int i =get_snake_tail_index(); i<=get_snake_head_index(); i++){
 			eeprom_write_byte(SNAKE_POSITION_TAIL + current_snake_position_memory, get_snake_position_at_index(i));
 			current_snake_position_memory +=0x08;
-			printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
+			//printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
 			
 		}
 	}
@@ -104,8 +104,8 @@ void new_game_from_EEPROM(void){
 	if(EEPROM_has_saved_game()){
 		clear_terminal(); 
 		set_clock_ticks(eeprom_read_dword(CLOCK_TICKS));
-
 		set_score(eeprom_read_dword(GAME_SCORE));
+		
 		// Methods from init_game(); 
 		ledmatrix_clear();
 		init_score_on_terminal();
@@ -178,7 +178,7 @@ void load_snake_from_EPPROM(void){
 	do 
 	{
 		PosnType snake_position = eeprom_read_byte(snake_memory_position);
-		printf("x: %u y: %u \n", x_position(snake_position), y_position(snake_position)); 
+		//  printf("x: %u y: %u \n", x_position(snake_position), y_position(snake_position)); 
 		set_snake_position_in_array(snake_position, snakePosition_index); 
 		update_display_at_position(snake_position, COLOUR_GREEN);
 		snake_memory_position +=8; 

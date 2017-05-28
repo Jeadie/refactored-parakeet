@@ -74,7 +74,7 @@ void set_high_score_name(void){
 				current_high_score_name[score_name_pointer] = serial_input;
 				printf("%c", serial_input);
 				score_name_pointer++;
-			}else if(serial_input =='\n'){
+			}else if(serial_input =='\n' && score_name_pointer>=1){
 				break; 
 			}else if (serial_input == BACKSPACE_CHAR){
 				printf("%c", ' ');

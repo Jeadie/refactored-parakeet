@@ -61,12 +61,12 @@ void init_timer0(void) {
 }
 
 void toggle_timer_clock(void){
-	//unpaused_game = 1- unpaused_game;
-	TIMSK0 ^= (1<<OCIE0A);
+	unpaused_game = 1- unpaused_game;
+	// TIMSK0 ^= (1<<OCIE0A);
 }
 int timer_is_paused(void){
-	//return !unpaused_game;
-	return !(TIMSK0 & (1<<OCIE0A)); 
+	return !unpaused_game;
+	// return !(TIMSK0 & (1<<OCIE0A)); 
 }
 
 uint32_t get_clock_ticks(void) {
@@ -99,8 +99,9 @@ void set_clock_ticks(uint32_t clock){
  * the defined output compare value (every millisecond)
  */
 ISR(TIMER0_COMPA_vect) {
-	// TODO: 
-	clock_ticks++;
+	if(unpaused_game){
+		clock_ticks++;
+	}
 	display_SSD_value();
 }
 
