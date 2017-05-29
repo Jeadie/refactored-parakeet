@@ -123,7 +123,6 @@ void new_game_from_EEPROM(void){
 		set_game_speed(game_from_EEPROM.game_speed);
 		load_rat_from_EEPROM(game_from_EEPROM.rat);
 		initialise_timer_one();
-		play_start_game_sound_effect();
 	
 		// Init food, rats, superfood and snake
 		add_food_to_board(game_from_EEPROM.food_one);

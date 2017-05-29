@@ -24,6 +24,7 @@
 #include "snake.h"
 #include "SuperFood.h"
 #include "rats.h"
+#include "Buzzer.h"
 
 // Define the CPU clock speed so we can use library delay functions
 #define F_CPU 8000000L
@@ -55,7 +56,8 @@ int main(void) {
 	DDRA = 0xff;
 	DDRD |= (1<<2);
 	DDRD &= ~(1<<3); 
-	
+	initialise_timer_one();
+
 	// Show the splash screen message. Returns when display
 	// is complete
 	splash_screen();

@@ -10,6 +10,7 @@
 #define BUZZER_H_
 uint8_t sound_effects_on_mode(void);
 void reduce_buzzer_timer(void);
+void set_silent_sound(void);
 void reset_buzzer(void);
 int buzzer_time_left(void);
 void next_buzzer_tone(void);

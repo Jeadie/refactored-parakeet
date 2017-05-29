@@ -24,6 +24,8 @@ void initialise_timer_one(void){
 		OCR1A = 1000;
 		DDRD &= ~(1<<5); 
 		DDRD &= ~(1<<3); 
+		set_silent_sound();
+
 }
 void change_timer_one_frequency(int new_frequency){
 	//  
