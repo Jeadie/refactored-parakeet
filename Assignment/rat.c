@@ -17,6 +17,7 @@
 #include <math.h>
 #include "rats.h"
 
+// TODO: make rat not collide with snake
 PosnType rat_position; 
 
 uint16_t RAT_WAIT_TIME = 1200;

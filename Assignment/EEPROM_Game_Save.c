@@ -5,8 +5,9 @@
  *  Author: Jack Eadie
  */ 
 
-//  TODO: CHeck through this with tutor
-//  TODO: Try to improve speed and reduction of EEPROM usage => increase speed
+//  TODO: figure out why high score isn't working 
+//  TODO: figure out why top level of score board is blank (everything is down by one). 
+//  TODO: not saving gamescore
 #include "rats.h"
 #include "SuperFood.h"
 #include "food.h"
@@ -45,6 +46,7 @@ void save_game_to_EPPROM(void){
 	//  Save general game values
 	eeprom_write_word(GAME_SPEED, get_current_game_speed());
 	eeprom_write_dword(GAME_SCORE, get_score());
+	printf("G Score :%u \n", eeprom_read_dword(GAME_SCORE));  // not working
 	eeprom_write_byte(SNAKE_LENGTH, get_snake_length());
 	eeprom_write_dword(CLOCK_TICKS, get_clock_ticks());
 	eeprom_write_byte(SNAKE_DIRECTION, get_current_drn()); 
@@ -93,7 +95,7 @@ void print_save_details(void){
 	printf("S1 :%u \n", eeprom_read_byte(SUPERFOOD));
 	printf("R1 :%u \n", eeprom_read_byte(RAT));
 	printf("Game Speed :%u \n", eeprom_read_word(GAME_SPEED));
-	printf("G Score :%i \n", eeprom_read_dword(GAME_SCORE));  // not working
+	printf("G Score :%u \n", eeprom_read_dword(GAME_SCORE));  // not working
 	printf("Snake Length :%u \n", eeprom_read_byte(SNAKE_LENGTH));
 	printf("Snake tail :%u \n", eeprom_read_byte(SNAKE_POSITION_TAIL));
 	printf("G time :%i \n", eeprom_read_dword(CLOCK_TICKS));

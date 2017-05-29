@@ -14,6 +14,7 @@
 #define BACKSPACE_CHAR 127
 #define FOUR_SPACES 0x2D2D2D
 #define UNDERSCORE 95
+
 #define NAME_ONE 0x20
 #define NAME_TWO 0x40
 #define NAME_THREE 0x60

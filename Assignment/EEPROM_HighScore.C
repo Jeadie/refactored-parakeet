@@ -93,17 +93,18 @@ void set_high_score_name(void){
 	}
 void handle_sequence_into_EEPFROM(){
 	eeprom_write_dword(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
-	switch(high_score_position()){
+	uint16_t score_position= high_score_position();
+	switch(score_position){
 		case SCORE_FOUR: move_four_place_down(); break; 
 		case SCORE_THREE: move_three_place_down(); break; 
 		case SCORE_TWO: move_two_place_down(); break;
 		case SCORE_ONE: move_one_place_down(); break; 
 	}
 	
-	eeprom_write_dword(high_score_position(), get_score());
-	eeprom_write_byte(high_score_name_position(high_score_position()), current_high_score_name[0]);
-	eeprom_write_byte(high_score_name_position(high_score_position()) +0x08, current_high_score_name[1]);
-	eeprom_write_byte(high_score_name_position(high_score_position()) +0x10, current_high_score_name[2]);
+	eeprom_write_dword(score_position, get_score());
+	eeprom_write_byte(high_score_name_position(score_position), current_high_score_name[0]);
+	eeprom_write_byte(high_score_name_position(score_position) +0x08, current_high_score_name[1]);
+	eeprom_write_byte(high_score_name_position(score_position) +0x10, current_high_score_name[2]);
 	
 	clear_terminal();
 }
@@ -114,6 +115,7 @@ void move_place_down(uint16_t score_position, uint16_t name_position){
 	uint8_t char2 = eeprom_read_byte(name_position+0x08);
 	uint8_t char3 = eeprom_read_byte(name_position+0x10);
 	eeprom_write_dword((score_position+0x20), score); 
+	//  eeprom_write_block()
 	eeprom_write_byte(name_position +0x20, char1);
 	eeprom_write_byte(name_position +0x28, char2);
 	eeprom_write_byte(name_position +0x30, char3);
