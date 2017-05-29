@@ -123,7 +123,7 @@ void add_new_rat_position(void){
 	// If we get here, we've found an unoccupied position (test_position)
 	// Add it to our list, display it, and return its ID.
 	rat_position = test_position;
-	ledmatrix_update_pixel(x_position(rat_position), y_position(rat_position), COLOUR_ORANGE);
+	ledmatrix_update_pixel(x_position(rat_position), y_position(rat_position), COLOUR_LIGHT_YELLOW);
 }
 
 uint8_t is_time_to_move_rat(void){
