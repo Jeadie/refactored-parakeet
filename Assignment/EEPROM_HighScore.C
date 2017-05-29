@@ -15,43 +15,51 @@
 #include <avr/eeprom.h>
 #include "terminalio.h"
 
+static char current_high_score_name[3]; 
 
-static char current_high_score_name[4]; 
+struct High_Score_Place {
+	char name[3];
+	uint32_t score;
+};
+
 uint8_t is_high_score(void){
-	return (get_score() >= eeprom_read_dword(SCORE_FIVE)) || !(EEPROM_High_Score_has_been_initialised()) ;
-}
-
-uint16_t high_score_name_position(uint16_t score_position){
-// 	if (!(EEPROM_High_Score_has_been_initialised())){
-// 		return NAME_ONE;
-// 	}
-	switch(score_position){
-		case SCORE_FIVE: return NAME_FIVE; break; 
-		case SCORE_FOUR: return NAME_FOUR; break;
-		case SCORE_THREE: return NAME_THREE; break;
-		case SCORE_TWO: return NAME_TWO; break;
-		case SCORE_ONE: return NAME_ONE; break;
-	}
+	uint32_t score = get_score();
+	struct High_Score_Place current_score_place;
+	eeprom_read_block(&current_score_place, NAME_FIVE, 7);
+	return (score >= current_score_place.score || !(EEPROM_High_Score_has_been_initialised())) ;
 }
 
 uint16_t high_score_position(void){
 	if (!(EEPROM_High_Score_has_been_initialised())){
-		return SCORE_ONE;
+		return NAME_ONE;
 	}
-	if (get_score() > eeprom_read_dword(SCORE_ONE)){
-		return SCORE_ONE;
+	
+	uint32_t score = get_score(); 
+	struct High_Score_Place current_score_place; 
+	eeprom_read_block(&current_score_place, NAME_ONE, 7);
+
+	if (score> current_score_place.score){
+		return NAME_ONE;
 	}
-	if (get_score() > eeprom_read_dword(SCORE_TWO)){
-		return SCORE_TWO;
+	
+	eeprom_read_block(&current_score_place, NAME_TWO, 7);
+	if (score> current_score_place.score){
+		return NAME_TWO;
 	}
-	if (get_score() > eeprom_read_dword(SCORE_THREE)){
-		return SCORE_THREE;
+	
+	eeprom_read_block(&current_score_place, NAME_THREE, 7);	
+	if (score> current_score_place.score){
+		return NAME_THREE;
 	}
-	if (get_score() > eeprom_read_dword(SCORE_FOUR)){
-		return SCORE_FOUR;
+	
+	eeprom_read_block(&current_score_place, NAME_FOUR, 7);
+	if (score> current_score_place.score){
+		return NAME_FOUR;
 	}
-	if (get_score() > eeprom_read_dword(SCORE_FIVE)){
-		return SCORE_FIVE;
+	
+	eeprom_read_block(&current_score_place, NAME_FIVE, 7);
+	if (score> current_score_place.score){
+		return NAME_FIVE;
 	}
 }
 
@@ -74,7 +82,7 @@ void set_high_score_name(void){
 				current_high_score_name[score_name_pointer] = serial_input;
 				printf("%c", serial_input);
 				score_name_pointer++;
-			}else if(serial_input =='\n' && score_name_pointer>=1){
+			}else if(serial_input =='\n' && score_name_pointer>1){
 				break; 
 			}else if (serial_input == BACKSPACE_CHAR){
 				printf("%c", ' ');
@@ -87,6 +95,9 @@ void set_high_score_name(void){
 		while(1){
 			if(eeprom_is_ready()){
 				handle_sequence_into_EEPFROM();
+				current_high_score_name[0] = ' ';
+				current_high_score_name[1] = ' ';
+				current_high_score_name[2] = ' ';
 				break; 
 			}
 		}
@@ -94,71 +105,62 @@ void set_high_score_name(void){
 void handle_sequence_into_EEPFROM(){
 	eeprom_write_dword(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
 	uint16_t score_position= high_score_position();
-	switch(score_position){
-		case SCORE_FOUR: move_four_place_down(); break; 
-		case SCORE_THREE: move_three_place_down(); break; 
-		case SCORE_TWO: move_two_place_down(); break;
-		case SCORE_ONE: move_one_place_down(); break; 
-	}
+		switch(score_position){
+			case NAME_FOUR: move_four_place_down(); break;
+			case NAME_THREE: move_three_place_down(); break;
+			case NAME_TWO: move_two_place_down(); break;
+			case NAME_ONE: move_one_place_down(); break;
+		}
+	struct High_Score_Place new_score; 
+	new_score.name[0] = current_high_score_name[0];
+	new_score.name[1] = current_high_score_name[1];
+	new_score.name[2] = current_high_score_name[2];
+	new_score.score = get_score();
 	
-	eeprom_write_dword(score_position, get_score());
-	eeprom_write_byte(high_score_name_position(score_position), current_high_score_name[0]);
-	eeprom_write_byte(high_score_name_position(score_position) +0x08, current_high_score_name[1]);
-	eeprom_write_byte(high_score_name_position(score_position) +0x10, current_high_score_name[2]);
-	
+	eeprom_write_block(&new_score, score_position, sizeof(new_score));
+		
 	clear_terminal();
 }
 
-void move_place_down(uint16_t score_position, uint16_t name_position){
-	uint32_t score = eeprom_read_dword(score_position); 
-	uint8_t char1 = eeprom_read_byte(name_position);
-	uint8_t char2 = eeprom_read_byte(name_position+0x08);
-	uint8_t char3 = eeprom_read_byte(name_position+0x10);
-	eeprom_write_dword((score_position+0x20), score); 
-	//  eeprom_write_block()
-	eeprom_write_byte(name_position +0x20, char1);
-	eeprom_write_byte(name_position +0x28, char2);
-	eeprom_write_byte(name_position +0x30, char3);
+void move_place_down(uint16_t mem_position){
+	struct High_Score_Place high_score_place;
+	eeprom_read_block(&high_score_place, mem_position, 7); 
+	eeprom_write_block(&high_score_place, mem_position +64, 7);
 }
 
 void move_four_place_down(void){
-	move_place_down(SCORE_FOUR, NAME_FOUR); 
+	move_place_down(NAME_FOUR); 
 }
 
 void move_three_place_down(void){
 	move_four_place_down(); 
-	move_place_down(SCORE_THREE, NAME_THREE);
+	move_place_down(NAME_THREE);
 }
 
 void move_two_place_down(void){
 	move_three_place_down();
-	move_place_down(SCORE_TWO, NAME_TWO);
+	move_place_down(NAME_TWO);
 }
 
 void move_one_place_down(void){
 	move_two_place_down();
-	move_place_down(SCORE_ONE, NAME_ONE);
+	move_place_down(NAME_ONE);
 }
 
 void initialise_EEPROM(void){
-	eeprom_write_dword(SCORE_ONE, 0x00);
-	eeprom_write_dword(SCORE_TWO, 0x00);
-	eeprom_write_dword(SCORE_THREE, 0x00);
-	eeprom_write_dword(SCORE_FOUR, 0x00);
-	eeprom_write_dword(SCORE_FIVE, 0x00);
-	reset_name_at_memory_position(NAME_ONE);
-	reset_name_at_memory_position(NAME_TWO);
-	reset_name_at_memory_position(NAME_THREE);
-	reset_name_at_memory_position(NAME_FOUR);
-	reset_name_at_memory_position(NAME_FIVE);
 	eeprom_write_dword(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
+	struct High_Score_Place empty_score_place;
+	empty_score_place.name[0] = ' ';
+	empty_score_place.name[1] = ' ';
+	empty_score_place.name[2] = ' ';
+	empty_score_place.score = 0; 
+	eeprom_write_block(&empty_score_place, NAME_ONE, 7);
+	eeprom_write_block(&empty_score_place, NAME_TWO, 7);
+	eeprom_write_block(&empty_score_place, NAME_THREE, 7);
+	eeprom_write_block(&empty_score_place, NAME_FOUR, 7);
+	eeprom_write_block(&empty_score_place, NAME_FIVE, 7);
+
 	}
-	
-void reset_name_at_memory_position(uint16_t mem_pos){
-	eeprom_write_byte(mem_pos, UNDERSCORE);
-	eeprom_write_byte(mem_pos+0x08, UNDERSCORE);
-	eeprom_write_byte(mem_pos+0x10, UNDERSCORE);
-}
 
 
 int EEPROM_High_Score_has_been_initialised(void){
@@ -172,35 +174,41 @@ void display_EEPROM_high_score(void){
 	move_cursor(10,13);
 	//initialise_EEPROM();
 	if(EEPROM_High_Score_has_been_initialised()){
-
-		printf("First: %c%c%c %d", eeprom_read_byte(NAME_ONE), 
-									eeprom_read_byte(NAME_ONE+0x08), 
-									eeprom_read_byte(NAME_ONE+0x10), 
-									eeprom_read_dword(SCORE_ONE));
+		struct High_Score_Place score_place_to_display; 
+		eeprom_read_block(&score_place_to_display, NAME_ONE, 7);
+		printf("First: %c%c%c %d", score_place_to_display.name[0], 
+									score_place_to_display.name[1], 
+									score_place_to_display.name[2], 
+									score_place_to_display.score);
+		
 		move_cursor(10,14);					
 		
-		printf("Second: %c%c%c %d", eeprom_read_byte(NAME_TWO),
-									eeprom_read_byte(NAME_TWO+0x08),
-									eeprom_read_byte(NAME_TWO+0x10),
-									eeprom_read_dword(SCORE_TWO));
+		eeprom_read_block(&score_place_to_display, NAME_TWO, 7);
+		printf("Second: %c%c%c %d", score_place_to_display.name[0],
+									score_place_to_display.name[1],
+									score_place_to_display.name[2],
+									score_place_to_display.score);
 		move_cursor(10,15);
 
-		printf("Third: %c%c%c %d", eeprom_read_byte(NAME_THREE),
-									eeprom_read_byte(NAME_THREE +8),
-									eeprom_read_byte(NAME_THREE + 16),
-									eeprom_read_dword(SCORE_THREE));
+		eeprom_read_block(&score_place_to_display, NAME_THREE, 7);
+		printf("Third: %c%c%c %d", score_place_to_display.name[0],
+									score_place_to_display.name[1],
+									score_place_to_display.name[2],
+									score_place_to_display.score);
 		move_cursor(10,16);
 
-		printf("Four: %c%c%c %d \n", eeprom_read_byte(NAME_FOUR),
-									eeprom_read_byte(NAME_FOUR+8),
-									eeprom_read_byte(NAME_FOUR+16),
-									eeprom_read_dword(SCORE_FOUR));
+		eeprom_read_block(&score_place_to_display, NAME_FOUR, 7);
+		printf("Fourth: %c%c%c %d", score_place_to_display.name[0],
+									score_place_to_display.name[1],
+									score_place_to_display.name[2],
+									score_place_to_display.score);
 		move_cursor(10,17);
 
-		printf("Five: %c%c%c %d", eeprom_read_byte(NAME_FIVE),
-								eeprom_read_byte(NAME_FIVE+8),
-								eeprom_read_byte(NAME_FIVE+16),
-								eeprom_read_dword(SCORE_FIVE));
+		eeprom_read_block(&score_place_to_display, NAME_FIVE, 7);
+		printf("Fifth: %c%c%c %d", score_place_to_display.name[0],
+									score_place_to_display.name[1],
+									score_place_to_display.name[2],
+									score_place_to_display.score);
 	}
 	else{
 		initialise_EEPROM();
