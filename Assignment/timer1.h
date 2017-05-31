@@ -13,8 +13,10 @@ void initialise_timer_one(void);
 
 void disable_timer_one(void);
 void enable_timer_one(void);
-
+void handle_buzzer_loop(void);
 void change_timer_one_frequency(int desired_frequency);
 void change_OCR1A(int new_OCR1A);
+
+
 
 #endif /* TIMER1_H_ */

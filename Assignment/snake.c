@@ -11,6 +11,7 @@
 #include "board.h"
 #include "food.h"
 #include "SuperFood.h"
+#include "joystick.h"
 
 #define SNAKE_POSITION_ARRAY_SIZE ((MAX_SNAKE_SIZE)+1)
 
@@ -176,6 +177,9 @@ int8_t advance_snake_head(void) {
 	** If we're at the edge of the board, then we wrap around to
 	** the other edge.
     */
+	if (get_joystick_direction() !=-1){
+		printf(get_joystick_direction());
+	}
     switch (nextSnakeDirn) {
         case SNAKE_UP:
 			if(headY == BOARD_HEIGHT - 1) {
@@ -219,9 +223,9 @@ int8_t advance_snake_head(void) {
 	/* Update the current direction */
 	curSnakeDirn = nextSnakeDirn;
 	
-	if(sound_effects_on_mode()){
-		 play_eating_food_sound_effect();
-	}
+// 	if(sound_effects_on_mode()){
+// 		 play_eating_food_sound_effect();
+// 	}
 	// Change position to next head Position
 	}
 

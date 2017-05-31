@@ -25,6 +25,8 @@
 #define SNAKE_POSITION_TAIL 0x230
 
 void save_game_to_EPPROM(void);
+uint8_t EEPROM_has_saved_game(void); 
+void new_game_from_EEPROM(void);
 // void load_food_from_EEPROM(void);
 // void load_rat_from_EEPROM(void);
 // void load_rat_from_superfood(void);

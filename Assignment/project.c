@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>		// For random()
 
+#include "joystick.h"
 #include "EEPROM_HighScore.h"
 #include "EEPROM_Game_Save.h"
 #include "ledmatrix.h"
@@ -25,6 +26,7 @@
 #include "SuperFood.h"
 #include "rats.h"
 #include "Buzzer.h"
+
 
 // Define the CPU clock speed so we can use library delay functions
 #define F_CPU 8000000L
@@ -53,7 +55,7 @@ int main(void) {
 	// Setup hardware and call backs. This will turn on 
 	// interrupts.
 	initialise_hardware();
-	DDRA = 0xff;
+	DDRC = 0xff;
 	DDRD |= (1<<2);
 	DDRD &= ~(1<<3); 
 	initialise_timer_one();
@@ -80,6 +82,7 @@ int main(void) {
 void initialise_hardware(void) {
 	// Set up SPI communication with LED matrix
 	ledmatrix_setup();
+	init_joystick();
 	
 	// Set up pin change interrupts on the push-buttons
 	init_button_interrupts();
@@ -161,12 +164,12 @@ void play_game(void) {
 	// and on a regular basis will move the snake forward.
 
 	while(1) {
-			if(time_to_add_superfood()){
-				add_superfood_to_board();}
-			if(time_to_remove_superfood()){
-				remove_superfood_from_board();}
-			if(is_time_to_move_rat()){move_rat();}
-			handle_buzzer_loop();
+		if(time_to_add_superfood()){
+		add_superfood_to_board();}
+		if(time_to_remove_superfood()){
+		remove_superfood_from_board();}
+		if(is_time_to_move_rat()){move_rat();}
+		handle_buzzer_loop();
 		// Check for input - which could be a button push or serial input.
 		// Serial input may be part of an escape sequence, e.g. ESC [ D
 		// is a left cursor key press. We will be processing each character
@@ -215,6 +218,7 @@ void play_game(void) {
 			}
 		}
 	if(!(timer_is_paused())){
+	
 		// Process the input. 
 		if(button==0 || escape_sequence_char=='C') {
 			// Set next direction to be moved to be right.
@@ -266,7 +270,7 @@ void handle_game_over() {
 	move_cursor(10,5);
 	printf_P(PSTR("GAME OVER"));
 	move_cursor(10,7);
-	printf("Score: %u", get_score());
+	printf("Score: %lu", get_score());
 	display_EEPROM_high_score();
 
 	if (is_high_score()){

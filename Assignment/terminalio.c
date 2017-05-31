@@ -27,7 +27,7 @@ void reverse_video(void) {
 }
 
 void clear_terminal(void) {
-	printf_P(PSTR("\x1b[2J"));
+printf_P(PSTR("\x1b[2J"));
 }
 
 void clear_to_end_of_line(void) {

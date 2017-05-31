@@ -1,18 +1,8 @@
-/*
- * timer0.c
- *
- * Author: Peter Sutton
- *
- * We setup timer0 to generate an interrupt every 1ms
- * We update a global clock tick variable - whose value
- * can be retrieved using the get_clock_ticks() function.
- */
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "timer0.h"
-#include "snake.h"
-uint8_t SSD_CC_value = 1; 
+// #include "snake.h"
+uint8_t volatile SSD_CC_value = 1; 
 uint8_t seven_seg_for_tens[10] = {0,6,91,79,102,109,125,7,127,111};
 uint8_t seven_seg_for_ones[10] = { 63,6,91,79,102,109,125,7,127,111};
 
@@ -22,7 +12,7 @@ uint8_t seven_seg_for_ones[10] = { 63,6,91,79,102,109,125,7,127,111};
 
 static volatile uint32_t clock_ticks; 
 static volatile uint8_t unpaused_game = 1; 
-static volatile uint8_t SSD_digit_option=0; 
+//static volatile uint8_t SSD_digit_option=0; 
 /* Set up timer 0 to generate an interrupt every 1ms. 
  * We will divide the clock by 64 and count up to 124.
  * We will therefore get an interrupt every 64 x 125
@@ -77,22 +67,21 @@ uint32_t get_clock_ticks(void) {
 	 * of the value. Interrupts are re-enabled if they were
 	 * enabled at the start.
 	 */
-	uint8_t interrupts_were_on = bit_is_set(SREG, SREG_I);
+	// uint8_t interrupts_were_on = bit_is_set(SREG, SREG_I);
 	cli();
 	return_value = clock_ticks;
-	if(interrupts_were_on) {
-		sei();
-	}
+	//if(interrupts_were_on) {
+	sei();
+	//}
 	return return_value;
 }
 
 void set_clock_ticks(uint32_t clock){
-	uint8_t interrupts_were_on = bit_is_set(SREG, SREG_I);
+	//uint8_t interrupts_were_on = bit_is_set(SREG, SREG_I);
 	cli();
 	clock_ticks =clock;
-	if(interrupts_were_on) {
-		sei();
-	}
+	sei();
+	//}
 }
 
 /* Interrupt handler which fires when timer/counter 0 reaches 
@@ -102,7 +91,7 @@ ISR(TIMER0_COMPA_vect) {
 	if(unpaused_game){
 		clock_ticks++;
 	}
-	display_SSD_value();
+	handle_buzzer_loop();
 }
 
 void display_SSD_value(){
@@ -111,11 +100,11 @@ void display_SSD_value(){
 	
 	if (SSD_CC_value) {
 		PORTD |= (1<<2);
-		PORTA = seven_seg_for_tens[get_snake_length()/10];
+		PORTC = seven_seg_for_tens[get_snake_length()/10];
 	}
 	else{
 		PORTD &= ~(1<<2);
-		PORTA = seven_seg_for_ones[get_snake_length()%10];
+		PORTC = seven_seg_for_ones[get_snake_length()%10];
 	}
 	SSD_CC_value = 1-SSD_CC_value; 
 }

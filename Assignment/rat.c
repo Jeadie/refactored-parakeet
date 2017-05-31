@@ -68,8 +68,8 @@ void move_rat(void){
 		attempts ++;
 		move_option = (move_option +1)%4; 
 		
-	} while ((is_item_at(new_rat_pos)) &&(attempts <4)); // || (rat_jumped_the_board(new_rat_pos))); (attempts <4) && 
-	
+	} while ((is_snake_at(new_rat_pos)) &&(attempts <4)); // || (rat_jumped_the_board(new_rat_pos))); (attempts <4) && 
+	// in feature summary about rat jumping the boarder
 	if (attempts<=4){
 		set_rat_at_pos(new_rat_pos); 
 	}
