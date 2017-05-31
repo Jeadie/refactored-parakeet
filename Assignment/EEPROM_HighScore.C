@@ -60,7 +60,7 @@ uint16_t high_score_position(void){
 	if (score> current_score_place.score){
 		return NAME_FIVE;
 	}
-	return NULL; 
+	return NAME_FIVE; 
 	
 }
 
@@ -116,16 +116,16 @@ void handle_sequence_into_EEPROM(){
 	new_score.name[2] = current_high_score_name[2];
 	new_score.score = get_score();
 	
-	eeprom_write_block(&new_score, score_position, sizeof(new_score));
+	eeprom_write_block(&new_score, (uint8_t*)score_position, sizeof(new_score));
 		
 	// clear_terminal();
 }
 
 void move_place_down(uint16_t mem_position){
 	struct High_Score_Place high_score_place;
-	eeprom_read_block(&high_score_place, mem_position, 7); 
+	eeprom_read_block(&high_score_place, (uint8_t*)mem_position, 7); 
 	uint16_t moved_place = mem_position +64;
-	eeprom_write_block(&high_score_place, moved_place, 7);
+	eeprom_write_block(&high_score_place, (uint8_t*)moved_place, 7);
 }
 
 void move_four_place_down(void){

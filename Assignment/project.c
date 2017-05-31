@@ -251,7 +251,9 @@ void play_game(void) {
 		}else if(EEPROM_has_saved_game() && (serial_input == 'o' || serial_input == 'O')){
 			load_EEPROM_data_on_next_game = 1;
 			break;
-	}
+		}else if(serial_input == 'n'|| serial_input == 'N'){
+			break;
+		}
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing
 		

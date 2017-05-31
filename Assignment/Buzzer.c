@@ -49,26 +49,26 @@ SoundEffect Start_tone;
 
 SoundEffect Start_tone=
 {
-	.buzzer_OCR1A = &START_FREQ,
-	.durations=  &START_DUR,
+	.buzzer_OCR1A = START_FREQ,
+	.durations=  START_DUR,
 	.length = START_LENGTH,
 };
 SoundEffect Eat_tone=
 {
-	.buzzer_OCR1A = &EAT_FREQ,
-	.durations=  &EAT_DUR,
+	.buzzer_OCR1A = EAT_FREQ,
+	.durations=  EAT_DUR,
 	.length = EAT_LENGTH,
 };
 SoundEffect Begin_tone=
 {
-	.buzzer_OCR1A = &BEGIN_FREQ,
-	.durations=  &BEGIN_DUR,
+	.buzzer_OCR1A = BEGIN_FREQ,
+	.durations=  BEGIN_DUR,
 	.length = BEGIN_LENGTH,
 };
 SoundEffect end_tone=
 {
-	.buzzer_OCR1A = &END_FREQ,
-	.durations=  &END_DUR,
+	.buzzer_OCR1A = END_FREQ,
+	.durations=  END_DUR,
 	.length = END_LENGTH,
 };
 

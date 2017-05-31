@@ -18,7 +18,7 @@
 #define NAME_ONE 0x40
 #define NAME_TWO 0x80
 #define NAME_THREE 0xC0
-#define NAME_FOUR 0x100
+#define NAME_FOUR  0x100
 #define NAME_FIVE 0x140
 
 #define HIGHSCORE_SIGNATURE_MEMORY 0x0
