@@ -177,8 +177,8 @@ int8_t advance_snake_head(void) {
 	** If we're at the edge of the board, then we wrap around to
 	** the other edge.
     */
-	if (get_joystick_direction() !=-1){
-		printf(get_joystick_direction());
+	if(get_joystick_direction() != -1){
+		set_snake_dirn(get_joystick_direction()); 
 	}
     switch (nextSnakeDirn) {
         case SNAKE_UP:
@@ -315,7 +315,8 @@ PosnType advance_snake_tail(void) {
 	return prev_tail_position;
 }
 
-/* set_snake_dirn
+/* 
+
 **      Attempt to set the next snake direction.
 **      (Should be ignored if try and reverse snake from its current
 **      direction, but otherwise the direction will be accepted.)
@@ -325,7 +326,6 @@ void set_snake_dirn(SnakeDirnType dirn) {
 	/* YOUR CODE HERE - MODIFY THIS FUNCTION */
 	/* You must write code to check that the proposed direction (dirn)
 	** is not opposite to the current direction (stored in curSnakeDirn). 
-
 	**
 	** Initially, we assume the move is OK and just set the 
 	** next direction.

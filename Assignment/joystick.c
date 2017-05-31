@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 #include "snake.h"
-	uint16_t minimum_threshold = 300;
+	uint16_t minimum_threshold = 50;
 	uint16_t middle_value = 510; 
 	uint16_t value;
 	uint8_t x_or_y = 0;	/* 0 = x, 1 = y */
@@ -35,7 +35,7 @@ void init_joystick(void){
 	printf("ADC Test\n");
 }
 
-uint8_t read_joystick(void){
+uint16_t read_joystick(void){
 	 // Set the ADC mux to choose ADC0 if x_or_y is 0, ADC1 if x_or_y is 1
 	if(x_or_y == 0) {
 		ADMUX &= ~1;
@@ -49,18 +49,14 @@ uint8_t read_joystick(void){
 		; /* Wait until conversion finished */
 	}
 	value = ADC; // read the value
-	if(x_or_y == 0) {
-		printf("X: %4d ", value);
-		} else {
-		printf("Y: %4d\n", value);
-	}
 	// Next time through the loop, do the other direction
 	x_or_y ^= 1;
+
 	return value; 
 }
 
-int8_t get_joystick_direction(void){
-	int8_t y_axis, x_axis; 
+SnakeDirnType get_joystick_direction(void){
+	int16_t y_axis, x_axis; 
 	
 	if (x_or_y){
 		y_axis = read_joystick() - middle_value; 
@@ -76,9 +72,9 @@ int8_t get_joystick_direction(void){
 	}else if(abs(x_axis) >minimum_threshold){
 		if (x_axis >0){return SNAKE_RIGHT;}
 			else{return SNAKE_LEFT;}
-	
+	}else{
+		return -1; 
 	}
-	return -1; 
 } 
 	
 	
