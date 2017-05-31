@@ -11,6 +11,8 @@
 #include "board.h"
 #include "food.h"
 #include "SuperFood.h"
+#include "joystick.h"
+#include "rats.h"
 
 #define SNAKE_POSITION_ARRAY_SIZE ((MAX_SNAKE_SIZE)+1)
 
@@ -176,6 +178,9 @@ int8_t advance_snake_head(void) {
 	** If we're at the edge of the board, then we wrap around to
 	** the other edge.
     */
+	if(get_joystick_direction() != -1){
+		set_snake_dirn(get_joystick_direction()); 
+	}
     switch (nextSnakeDirn) {
         case SNAKE_UP:
 			if(headY == BOARD_HEIGHT - 1) {
@@ -219,9 +224,9 @@ int8_t advance_snake_head(void) {
 	/* Update the current direction */
 	curSnakeDirn = nextSnakeDirn;
 	
-	if(sound_effects_on_mode()){
-		 play_eating_food_sound_effect();
-	}
+// 	if(sound_effects_on_mode()){
+// 		 play_eating_food_sound_effect();
+// 	}
 	// Change position to next head Position
 	}
 
@@ -311,7 +316,8 @@ PosnType advance_snake_tail(void) {
 	return prev_tail_position;
 }
 
-/* set_snake_dirn
+/* 
+
 **      Attempt to set the next snake direction.
 **      (Should be ignored if try and reverse snake from its current
 **      direction, but otherwise the direction will be accepted.)
@@ -321,7 +327,6 @@ void set_snake_dirn(SnakeDirnType dirn) {
 	/* YOUR CODE HERE - MODIFY THIS FUNCTION */
 	/* You must write code to check that the proposed direction (dirn)
 	** is not opposite to the current direction (stored in curSnakeDirn). 
-
 	**
 	** Initially, we assume the move is OK and just set the 
 	** next direction.
@@ -375,26 +380,6 @@ int8_t is_snake_at(PosnType position) {
 	/* Snake does not occupy the given position */
 	return 0;
 }
-PosnType* get_snake_in_order(void){
-	PosnType snake_order[get_snake_length()]; 
-	if (get_snake_tail_position()> get_snake_head_position()){
-		//SSSH-------------------------TSSS
-		int a = 0; 
-		for (int i = get_snake_head_position(); i>=0; i--){
-			snake_order[a] = snakePositions[i]; 
-			a++;
-		}
-		for (int i = SNAKE_POSITION_ARRAY_SIZE-1; i>= get_snake_tail_position(); i--){
-			snake_order[a] = snakePositions[i];
-			a++;
-		}
-	}else{
-		//  ---TSSSSSSH----
-		for(int i =get_snake_tail_position(); i<=get_snake_head_position(); i++){
-			snake_order[i-get_snake_tail_position()] = snakePositions[i];
-		}
-	}
-	return snake_order;
-}
+
 
 		

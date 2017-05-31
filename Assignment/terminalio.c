@@ -10,6 +10,7 @@
 #include <avr/pgmspace.h>
 #include "score.h"
 #include "terminalio.h"
+#include "EEPROM_HighScore.h"
 
 
 
@@ -27,7 +28,7 @@ void reverse_video(void) {
 }
 
 void clear_terminal(void) {
-	printf_P(PSTR("\x1b[2J"));
+printf_P(PSTR("\x1b[2J"));
 }
 
 void clear_to_end_of_line(void) {
@@ -109,15 +110,12 @@ void init_score_on_terminal(void){
 	printf("Snake");
 
 	move_cursor(1,3);
-	printf("Score:						       ", get_score());
+	printf("Score:  ");
 	
-	move_cursor(20-score_length(), 3);
-	printf("%u", get_score()); 
-	move_cursor(10,3);
 }
 
 void update_terminal_score(void){
 	hide_cursor();
-	move_cursor(20-score_length(), 3);
-	printf("%u", get_score());
+	move_cursor(1, 3);
+	printf("Score: %8lu", get_score());
 }

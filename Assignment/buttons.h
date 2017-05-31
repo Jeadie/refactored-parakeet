@@ -23,7 +23,6 @@ void init_button_interrupts(void);
  */
 void empty_button_queue(void);
 int buzzer_times(void); 
-void handle_buzzer_loop(void);
 /* Return the last button pushed (0 to 3) or -1 if there are no
  * button pushes to return. (A small queue of button pushes is
  * kept. This function should be called frequently enough to

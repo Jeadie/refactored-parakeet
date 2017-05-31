@@ -19,6 +19,7 @@
 #define TIMER0_H_
 
 #include <stdint.h>
+//  uint8_t unpaused_game;
 
 /* Set up our timer to give us an interrupt every millisecond
  * and update our time reference. Note: interrupts will need 
@@ -29,12 +30,15 @@ void init_timer0(void);
 /* Return the current clock tick value - milliseconds since the timer was
  * initialised.
  */
-uint32_t get_clock_ticks(void);
-static volatile uint8_t uiunpaused_game;
-static volatile uint8_t SSD_digit_option;
-void set_clock_ticks(uint32_t clock);
 
+uint32_t get_clock_ticks(void);
+uint8_t SSD_digit_option;
+void set_clock_ticks(uint32_t clock);
+void display_SSD_value(void); 
 void toggle_timer_clock(void);
 
 int timer_is_paused(void);
+
+
+
 #endif

@@ -43,6 +43,7 @@ C_SRCS +=  \
 ../EEPROM_HighScore.C \
 ../food.c \
 ../game.c \
+../joystick.c \
 ../ledmatrix.c \
 ../position.c \
 ../project.c \
@@ -71,6 +72,7 @@ EEPROM_Game_Save.o \
 EEPROM_HighScore.o \
 food.o \
 game.o \
+joystick.o \
 ledmatrix.o \
 position.o \
 project.o \
@@ -92,6 +94,7 @@ EEPROM_Game_Save.o \
 EEPROM_HighScore.o \
 food.o \
 game.o \
+joystick.o \
 ledmatrix.o \
 position.o \
 project.o \
@@ -113,6 +116,7 @@ EEPROM_Game_Save.d \
 EEPROM_HighScore.d \
 food.d \
 game.d \
+joystick.d \
 ledmatrix.d \
 position.d \
 project.d \
@@ -134,6 +138,7 @@ EEPROM_Game_Save.d \
 EEPROM_HighScore.d \
 food.d \
 game.d \
+joystick.d \
 ledmatrix.d \
 position.d \
 project.d \
@@ -174,6 +179,8 @@ LINKER_SCRIPT_DEP+=
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega324a -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega324a" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
+
+
 
 
 

@@ -16,10 +16,11 @@ project.d project.o: .././project.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
- .././EEPROM_HighScore.h .././EEPROM_Game_Save.h .././ledmatrix.h \
- .././pixel_colour.h .././scrolling_char_display.h .././buttons.h \
- .././serialio.h .././terminalio.h .././score.h .././timer0.h .././game.h \
- .././snake.h .././position.h .././SuperFood.h .././rats.h \
+ .././joystick.h .././EEPROM_HighScore.h .././EEPROM_Game_Save.h \
+ .././position.h .././ledmatrix.h .././pixel_colour.h \
+ .././scrolling_char_display.h .././buttons.h .././serialio.h \
+ .././terminalio.h .././score.h .././timer0.h .././game.h .././snake.h \
+ .././SuperFood.h .././rats.h .././Buzzer.h .././timer1.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
@@ -58,9 +59,13 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
 
+.././joystick.h:
+
 .././EEPROM_HighScore.h:
 
 .././EEPROM_Game_Save.h:
+
+.././position.h:
 
 .././ledmatrix.h:
 
@@ -82,11 +87,13 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././snake.h:
 
-.././position.h:
-
 .././SuperFood.h:
 
 .././rats.h:
+
+.././Buzzer.h:
+
+.././timer1.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
 

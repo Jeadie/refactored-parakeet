@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #define F_CPU 8000000UL
-#include "avr/delay.h"
+#include "util/delay.h"
 #include <avr/pgmspace.h>
 #include "SuperFood.h"
 #include "rats.h"
@@ -50,8 +50,8 @@ void init_game(void) {
 	init_score_on_terminal();
 	reset_game_speed();
 	add_new_rat_position();
-	initialise_timer_one();
 	play_start_game_sound_effect();
+
 	// Initialise the snake and display it. We know the initial snake is only
 	// of length two so we can just retrieve the tail and head positions
 	init_snake();

@@ -14,6 +14,8 @@ food.c
 
 game.c
 
+joystick.c
+
 ledmatrix.c
 
 position.c

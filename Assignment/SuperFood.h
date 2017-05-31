@@ -8,7 +8,7 @@
 #define SUPERFOOD_H_
 
 uint8_t time_to_add_superfood(void);
-uint8_t load_superfood(PosnType loaded_pos);
+void load_superfood(PosnType loaded_pos);
 
 void eat_superfood_from_board(void);
 uint8_t time_to_remove_superfood(void);

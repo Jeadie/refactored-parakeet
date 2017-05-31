@@ -11,7 +11,7 @@
 #define SAVE_GAME_SIGNATURE 00011000
 #define SAVE_GAME_SIGNATURE_MEMORY 0x180
 
-#define FOOD_ONE 0x1A0
+#define SAVED_DATA_START 0x1A0
 #define FOOD_TWO 0x1A8
 #define FOOD_THREE 0x1B0
 #define FOOD_FOUR 0x1B8
@@ -22,12 +22,17 @@
 #define SNAKE_LENGTH 0x200
 #define CLOCK_TICKS 0x208
 #define SNAKE_DIRECTION 0x218
-#define SNAKE_POSITION_TAIL 0x220
-
+#define SNAKE_POSITION_TAIL 0x230
+#include "position.h"
+ 
 void save_game_to_EPPROM(void);
-// void load_food_from_EEPROM(void);
-// void load_rat_from_EEPROM(void);
-// void load_rat_from_superfood(void);
-// void load_snake_from_EPPROM(void);
+uint8_t EEPROM_has_saved_game(void); 
+void new_game_from_EEPROM(void);
+void load_food_from_EEPROM(void);
+void load_rat_from_EEPROM(PosnType rat_pos);
+void load_superfood_from_EEPROM(PosnType super_food);
+void add_food_to_board(PosnType food_pos);
+
+void load_snake_from_EPPROM(void);
 
 #endif /* EEPROM_GAME_SAVE_H_ */

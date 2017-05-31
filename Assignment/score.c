@@ -28,6 +28,3 @@ void set_score(uint32_t new_score){
 	score = new_score; 
 }
 
-uint8_t score_length(void){
-	return (score == 0 ? 1 : (int)(log10(score)+1)); 
-}

@@ -118,6 +118,4 @@ SnakeDirnType get_current_drn(void);
 */
 int8_t is_snake_at(PosnType position);
 
-PosnType get_snake_average_pos(void);
-
 #endif

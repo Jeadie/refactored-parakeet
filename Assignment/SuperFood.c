@@ -14,12 +14,13 @@
 #include "SuperFood.h"
 #include "snake.h"
 #include <math.h>
+#include <stdlib.h>
 
 
 uint8_t superfood_on_board; 
 PosnType superfood_position; 
 
-uint8_t load_superfood(PosnType loaded_pos){
+void load_superfood(PosnType loaded_pos){
 	superfood_position = loaded_pos; 
 	superfood_on_board = 1;
 }

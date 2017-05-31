@@ -16,6 +16,7 @@
 #include "SuperFood.h"
 #include <math.h>
 #include "rats.h"
+#include <stdlib.h>
 
 // TODO: make rat not collide with snake
 PosnType rat_position; 
@@ -66,10 +67,10 @@ void move_rat(void){
 			
 		}
 		attempts ++;
-		move_option = rand() %4; 
+		move_option = (move_option +1)%4; 
 		
-	} while ((attempts <4) && (is_item_at(new_rat_pos) || (rat_jumped_the_board(new_rat_pos))));
-	
+	} while ((is_snake_at(new_rat_pos)) &&(attempts <4)); // || (rat_jumped_the_board(new_rat_pos))); (attempts <4) && 
+	// in feature summary about rat jumping the boarder
 	if (attempts<=4){
 		set_rat_at_pos(new_rat_pos); 
 	}
@@ -92,7 +93,7 @@ uint8_t rat_jumped_the_board(PosnType new_pos){
 		(rat_y == BOARD_HEIGHT-1 && (y_position(new_pos) == 0))){
 			return 1; 
 		}
-	return 1; 
+	return 0; 
 }
 
 uint8_t is_rat_at(PosnType pos){
@@ -123,7 +124,7 @@ void add_new_rat_position(void){
 	// If we get here, we've found an unoccupied position (test_position)
 	// Add it to our list, display it, and return its ID.
 	rat_position = test_position;
-	ledmatrix_update_pixel(x_position(rat_position), y_position(rat_position), COLOUR_ORANGE);
+	ledmatrix_update_pixel(x_position(rat_position), y_position(rat_position), COLOUR_LIGHT_YELLOW);
 }
 
 uint8_t is_time_to_move_rat(void){
