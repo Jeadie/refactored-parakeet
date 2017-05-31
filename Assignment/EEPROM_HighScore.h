@@ -15,13 +15,13 @@
 #define FOUR_SPACES 0x2D2D2D
 #define UNDERSCORE 95
 
-#define NAME_ONE 0x40
-#define NAME_TWO 0x80
-#define NAME_THREE 0xC0
-#define NAME_FOUR  0x100
-#define NAME_FIVE 0x140
+#define NAME_ONE *(uint16_t*) 0x40
+#define NAME_TWO *(uint16_t*) 0x80
+#define NAME_THREE *(uint16_t*) 0xC0
+#define NAME_FOUR  *(uint16_t*) 0x100
+#define NAME_FIVE *(uint16_t*) 0x140
 
-#define HIGHSCORE_SIGNATURE_MEMORY 0x0
+#define HIGHSCORE_SIGNATURE_MEMORY (uint16_t*) 0x0
 #define HIGHSCORE_SIGNATURE 0x1234
 
 

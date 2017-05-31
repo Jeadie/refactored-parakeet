@@ -13,8 +13,7 @@
 #include "timer1.h"
 #include "Buzzer.h"
 #include "timer0.h"
-// TODO: get buzzer sounds working continuously
-// TODO: add buzzer switch into configuration
+
 #define START_LENGTH 3
 uint16_t START_FREQ[START_LENGTH] = {5000, 2000, 5000};
 uint16_t START_DUR[START_LENGTH] = {500, 500, 500};

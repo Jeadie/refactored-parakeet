@@ -41,14 +41,14 @@ typedef struct Game_Save_Data{
 
 
 uint8_t EEPROM_has_saved_game(void){
-	uint32_t current_signature = eeprom_read_dword(SAVE_GAME_SIGNATURE_MEMORY); 
+	uint32_t current_signature = eeprom_read_dword((uint32_t*) SAVE_GAME_SIGNATURE_MEMORY); 
 	return (current_signature == SAVE_GAME_SIGNATURE); 
 }
 
 void save_game_to_EPPROM(void){
 	cli();
 	// Save the Food Positions
-	eeprom_write_dword(SAVE_GAME_SIGNATURE_MEMORY, SAVE_GAME_SIGNATURE);
+	eeprom_write_dword((uint32_t*) SAVE_GAME_SIGNATURE_MEMORY, SAVE_GAME_SIGNATURE);
 	
 	struct Game_Save_Data new_saved_game; 
 	new_saved_game.food_one =get_position_of_food(0);

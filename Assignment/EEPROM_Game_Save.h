@@ -11,7 +11,7 @@
 #define SAVE_GAME_SIGNATURE 00011000
 #define SAVE_GAME_SIGNATURE_MEMORY 0x180 // (uint8_t*)0x180
 
-#define SAVED_DATA_START 0x1A0 // (uint8_t*)0x1A0
+#define SAVED_DATA_START (uint16_t*)0x1A0
 #define FOOD_TWO 0x1A8
 #define FOOD_THREE 0x1B0
 #define FOOD_FOUR 0x1B8

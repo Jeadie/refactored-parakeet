@@ -4,7 +4,6 @@
 #include "snake.h"
 #include "timer0.h"
 #include "Buzzer.h"
-// TODO: SSD numbers blurred too slow? not switching quick enough?
 #define F_CPU 8000000
 #include <util/delay.h>
 static volatile uint8_t unpaused_game = 1;

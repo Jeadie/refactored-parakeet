@@ -18,7 +18,6 @@
 #include "rats.h"
 #include <stdlib.h>
 
-// TODO: make rat not collide with snake
 PosnType rat_position; 
 
 uint16_t RAT_WAIT_TIME = 1200;
@@ -42,7 +41,6 @@ uint8_t is_item_at(PosnType position){
 }
 
 void move_rat(void){
-	//  TODO: make rat choose random option from remainder % 4 of clock ticks
 	uint8_t attempts = 0; 
 	PosnType new_rat_pos = position(0,0);
 	uint8_t move_option = rand()%4; 
