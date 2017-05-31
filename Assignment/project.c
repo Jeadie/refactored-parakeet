@@ -266,6 +266,7 @@ void play_game(void) {
 }
 
 void handle_game_over() {
+	play_end_game_sound_effect(); 
 	clear_terminal();
 	move_cursor(10,5);
 	printf_P(PSTR("GAME OVER"));

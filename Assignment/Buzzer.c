@@ -26,6 +26,10 @@ uint16_t EAT_DUR[START_LENGTH] = {500, 200};
 #define BEGIN_LENGTH 4
 uint16_t BEGIN_FREQ[BEGIN_LENGTH] = {4500, 3000, 1500, 1};
 uint16_t BEGIN_DUR[BEGIN_LENGTH] = {300, 400, 500, 0};
+	
+#define END_LENGTH 4
+uint16_t END_FREQ[END_LENGTH] = {1500, 3000, 4500, 1};
+uint16_t END_DUR[END_LENGTH] = {500, 400, 300, 0};
 
 int buzzer_time = 0;
 uint32_t  clock_at_tone_start;
@@ -61,40 +65,18 @@ SoundEffect Begin_tone=
 	.durations=  &BEGIN_DUR,
 	.length = BEGIN_LENGTH,
 };
+SoundEffect end_tone=
+{
+	.buzzer_OCR1A = &END_FREQ,
+	.durations=  &END_DUR,
+	.length = END_LENGTH,
+};
 
-SoundEffect *current_tone; // = &start_tone;
-//   SoundEffect start_tone;
-//   start_tone.length = START_LENGTH;
-//   start_tone.buzzer_OCR1A = &START_FREQ;
-//   start_tone.durations = &START_DUR;
+
+SoundEffect *current_tone;
 void add_sounds(void){
 	//SoundEffect *current_tone = &start_tone;
 }
-//  current tone and point to its buzzer_OCR1A and [i] move that much along	for the value
-// current_tone->buzzer_OCR1A[]
-
-// // Start_tone.buzzer_OCR1A[1] = 1000;
-// // Start_tone.buzzer_OCR1A[2] = 2000;
-// Start_tone.durations[0] = 500;
-// Start_tone.durations[1] = 1500;
-// Start_tone.durations[2] = 500;
-// Start_tone.pointer_finish = 2;
-//
-// End_tone.array_pointer = -1;
-// End_tone.buzzer_OCR1A[0] = 1000;
-// End_tone.buzzer_OCR1A[1] = 2000;
-// End_tone.buzzer_OCR1A[2] = 1000;
-// End_tone.durations[0] = 500;
-// End_tone.durations[1] = 1500;
-// End_tone.durations[2] = 500;
-// End_tone.pointer_finish = 2;
-//
-// Eat_tone.array_pointer = -1;
-// Eat_tone.buzzer_OCR1A[0] = 1000;
-// Eat_tone.buzzer_OCR1A[1] = 2000;
-// Eat_tone.durations[0] = 500;
-// Eat_tone.durations[1] = 1500;
-// End_tone.pointer_finish = 1;
 
 void init_buzzer() {
 	// printf("tone_length %u, tone duration %u", current_tone->length, current_tone->durations[0]);
@@ -168,15 +150,15 @@ void play_eating_food_sound_effect(void){
 }
 
 
-// 
-// void play_end_game_sound_effect(void){
-// 	current_tone = End_tone;
-// 	current_tone.array_pointer = -1;
-// 	next_buzzer_tone();
-// 	if(sound_effects_on_mode()){
-// 		enable_timer_one();
-// 	}
-// }
+
+void play_end_game_sound_effect(void){
+	current_tone = &end_tone;
+	current_index = -1;
+	next_buzzer_tone();
+	if(sound_effects_on_mode()){
+		enable_timer_one();
+	}
+}
 
 
 int last_tone_in_sequence(void){
