@@ -26,6 +26,7 @@
 #include "SuperFood.h"
 #include "rats.h"
 #include "Buzzer.h"
+#include "timer1.h"
 
 
 // Define the CPU clock speed so we can use library delay functions
@@ -169,7 +170,6 @@ void play_game(void) {
 		if(time_to_remove_superfood()){
 		remove_superfood_from_board();}
 		if(is_time_to_move_rat()){move_rat();}
-		handle_buzzer_loop();
 		// Check for input - which could be a button push or serial input.
 		// Serial input may be part of an escape sequence, e.g. ESC [ D
 		// is a left cursor key press. We will be processing each character
@@ -239,9 +239,13 @@ void play_game(void) {
 		}else if(EEPROM_has_saved_game() && (serial_input == 'o' || serial_input == 'O')){
  			load_EEPROM_data_on_next_game = 1;
  			break;
+
+		}else if(serial_input == 'n'|| serial_input == 'N'){
+			break; 
 		}
 	}else if(serial_input == 'p' || serial_input == 'P') {
 			toggle_timer_clock();
+		// TODO: Check whether these are okay. in P says serial is ignored but these seem important
 		}else if(serial_input == 's'|| serial_input == 'S'){
 			save_game_to_EPPROM();
 		}else if(EEPROM_has_saved_game() && (serial_input == 'o' || serial_input == 'O')){
@@ -266,7 +270,7 @@ void play_game(void) {
 }
 
 void handle_game_over() {
-	play_end_game_sound_effect(); 
+	play_end_game_sound_effect();
 	clear_terminal();
 	move_cursor(10,5);
 	printf_P(PSTR("GAME OVER"));

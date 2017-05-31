@@ -84,7 +84,7 @@ void init_buzzer() {
 }
 
 uint8_t sound_effects_on_mode(void){
-	return 1; // (PIND & (1<<3)) != 0 ;
+	return (PIND & (1<<3)) != 0 ;
 }
 
 int buzzer_time_left(void){

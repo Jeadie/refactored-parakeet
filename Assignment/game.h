@@ -8,6 +8,8 @@
 #define GAME_H_
 
 #include <inttypes.h>
+#include "pixel_colour.h"
+#include "position.h"
 
 // Initialise game. This initialises the board with snake and food items
 // and initialises the display.
@@ -26,4 +28,5 @@ int get_current_game_speed(void);
 static volatile uint16_t current_speed; 
 void init_score_on_terminal(void);
 void update_terminal_score(void);
+void update_display_at_position(PosnType posn, PixelColour colour); 
 #endif /* GAME_H_ */

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 #include "snake.h"
+#include <stdlib.h>
 	uint16_t minimum_threshold = 75;
 	uint16_t middle_value = 510; 
 	uint16_t value;

@@ -4,7 +4,7 @@
  * Created: 24/05/2017 10:59:13 AM
  *  Author: Jack Eadie
  */ 
-
+//  TODO: problem with using pointers as address, but if they are &name_One then a warning is made
 #include "serialio.h"
 #include "EEPROM_HighScore.h"
 #include <stdio.h>
@@ -55,24 +55,23 @@ uint16_t high_score_position(void){
 	eeprom_read_block(&current_score_place, NAME_FOUR, 7);
 	if (score> current_score_place.score){
 		return NAME_FOUR;
-	}
-	
+}
 	eeprom_read_block(&current_score_place, NAME_FIVE, 7);
 	if (score> current_score_place.score){
 		return NAME_FIVE;
 	}
+	return NULL; 
+	
 }
 
 void set_high_score_name(void){
 	move_cursor(10,8);
 	printf("You've set a high score. please set your initial below: ");
 	int score_name_pointer = 0; 
-	char serial_input, escape_sequence_char;
-	uint8_t characters_into_escape_sequence = 0;
+	char serial_input;
 	while (1){
 		show_cursor(); 
 		serial_input = -1;
-		escape_sequence_char = -1;
 		
 		if(serial_input_available()) {
 			// Serial data was available - read the data from standard input
@@ -94,7 +93,7 @@ void set_high_score_name(void){
 		// handle sequence into EEPFROM
 		while(1){
 			if(eeprom_is_ready()){
-				handle_sequence_into_EEPFROM();
+				handle_sequence_into_EEPROM();
 				current_high_score_name[0] = ' ';
 				current_high_score_name[1] = ' ';
 				current_high_score_name[2] = ' ';
@@ -102,7 +101,7 @@ void set_high_score_name(void){
 			}
 		}
 	}
-void handle_sequence_into_EEPFROM(){
+void handle_sequence_into_EEPROM(){
 	eeprom_write_dword(HIGHSCORE_SIGNATURE_MEMORY, HIGHSCORE_SIGNATURE);
 	uint16_t score_position= high_score_position();
 		switch(score_position){
@@ -119,13 +118,14 @@ void handle_sequence_into_EEPFROM(){
 	
 	eeprom_write_block(&new_score, score_position, sizeof(new_score));
 		
-	clear_terminal();
+	// clear_terminal();
 }
 
 void move_place_down(uint16_t mem_position){
 	struct High_Score_Place high_score_place;
 	eeprom_read_block(&high_score_place, mem_position, 7); 
-	eeprom_write_block(&high_score_place, mem_position +64, 7);
+	uint16_t moved_place = mem_position +64;
+	eeprom_write_block(&high_score_place, moved_place, 7);
 }
 
 void move_four_place_down(void){
@@ -163,7 +163,7 @@ void initialise_EEPROM(void){
 	}
 
 
-int EEPROM_High_Score_has_been_initialised(void){
+uint8_t EEPROM_High_Score_has_been_initialised(void){
 	uint32_t current_signature = eeprom_read_dword(HIGHSCORE_SIGNATURE_MEMORY);
 	return (current_signature == HIGHSCORE_SIGNATURE);
 }
@@ -176,7 +176,7 @@ void display_EEPROM_high_score(void){
 	if(EEPROM_High_Score_has_been_initialised()){
 		struct High_Score_Place score_place_to_display; 
 		eeprom_read_block(&score_place_to_display, NAME_ONE, 7);
-		printf("First: %c%c%c %d", score_place_to_display.name[0], 
+		printf("First: %c%c%c %lu", score_place_to_display.name[0], 
 									score_place_to_display.name[1], 
 									score_place_to_display.name[2], 
 									score_place_to_display.score);
@@ -184,28 +184,28 @@ void display_EEPROM_high_score(void){
 		move_cursor(10,14);					
 		
 		eeprom_read_block(&score_place_to_display, NAME_TWO, 7);
-		printf("Second: %c%c%c %d", score_place_to_display.name[0],
+		printf("Second: %c%c%c %lu", score_place_to_display.name[0],
 									score_place_to_display.name[1],
 									score_place_to_display.name[2],
 									score_place_to_display.score);
 		move_cursor(10,15);
 
 		eeprom_read_block(&score_place_to_display, NAME_THREE, 7);
-		printf("Third: %c%c%c %d", score_place_to_display.name[0],
+		printf("Third: %c%c%c %lu", score_place_to_display.name[0],
 									score_place_to_display.name[1],
 									score_place_to_display.name[2],
 									score_place_to_display.score);
 		move_cursor(10,16);
 
 		eeprom_read_block(&score_place_to_display, NAME_FOUR, 7);
-		printf("Fourth: %c%c%c %d", score_place_to_display.name[0],
+		printf("Fourth: %c%c%c %lu", score_place_to_display.name[0],
 									score_place_to_display.name[1],
 									score_place_to_display.name[2],
 									score_place_to_display.score);
 		move_cursor(10,17);
 
 		eeprom_read_block(&score_place_to_display, NAME_FIVE, 7);
-		printf("Fifth: %c%c%c %d", score_place_to_display.name[0],
+		printf("Fifth: %c%c%c %lu", score_place_to_display.name[0],
 									score_place_to_display.name[1],
 									score_place_to_display.name[2],
 									score_place_to_display.score);

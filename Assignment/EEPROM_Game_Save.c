@@ -21,8 +21,13 @@
 #include "EEPROM_Game_Save.h"
 #include <avr/eeprom.h>
 #include "score.h"
+#include "timer0.h"
+#include "terminalio.h"
+#include "timer1.h"
+#include "buttons.h"
+#include "serialio.h"
 
-struct Game_Save_Data{
+typedef struct Game_Save_Data{
 	PosnType food_one;
 	PosnType food_two;
 	PosnType food_three;
@@ -34,7 +39,7 @@ struct Game_Save_Data{
 	uint8_t snake_length; 
 	uint32_t clock_ticks; 
 	uint8_t snake_direction; 
-	};
+	} Game_Save_Data;
 	
 
 

@@ -1,8 +1,15 @@
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "snake.h"
 #include "timer0.h"
-// #include "snake.h"
+#include "Buzzer.h"
+
+#define F_CPU 8000000
+#include <util/delay.h>
+static volatile uint8_t unpaused_game = 1;
 uint8_t volatile SSD_CC_value = 1; 
+
 uint8_t seven_seg_for_tens[10] = {0,6,91,79,102,109,125,7,127,111};
 uint8_t seven_seg_for_ones[10] = { 63,6,91,79,102,109,125,7,127,111};
 
@@ -11,8 +18,7 @@ uint8_t seven_seg_for_ones[10] = { 63,6,91,79,102,109,125,7,127,111};
  * millisecond. Will overflow every ~49 days. */
 
 static volatile uint32_t clock_ticks; 
-static volatile uint8_t unpaused_game = 1; 
-//static volatile uint8_t SSD_digit_option=0; 
+
 /* Set up timer 0 to generate an interrupt every 1ms. 
  * We will divide the clock by 64 and count up to 124.
  * We will therefore get an interrupt every 64 x 125
@@ -91,10 +97,11 @@ ISR(TIMER0_COMPA_vect) {
 	if(unpaused_game){
 		clock_ticks++;
 	}
+	display_SSD_value();
 	handle_buzzer_loop();
 }
 
-void display_SSD_value(){
+void display_SSD_value(void){
 	//  1 is 10's space.
 	//  0 is 1's space.
 	
@@ -106,6 +113,8 @@ void display_SSD_value(){
 		PORTD &= ~(1<<2);
 		PORTC = seven_seg_for_ones[get_snake_length()%10];
 	}
+	_delay_us(1);
+		
 	SSD_CC_value = 1-SSD_CC_value; 
 }
 

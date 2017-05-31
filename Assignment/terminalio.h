@@ -62,6 +62,7 @@ void clear_to_end_of_line(void);
 void set_display_attribute(DisplayParameter parameter);
 void hide_cursor(void);
 void show_cursor(void);
+void display_start_terminal_screen(void); 
 
 // Enable scrolling for either the full screen or a particular region (rows)
 // For set_scroll_region y1 < y2 and the region includes rows y1 and y2.

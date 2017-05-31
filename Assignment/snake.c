@@ -12,6 +12,7 @@
 #include "food.h"
 #include "SuperFood.h"
 #include "joystick.h"
+#include "rats.h"
 
 #define SNAKE_POSITION_ARRAY_SIZE ((MAX_SNAKE_SIZE)+1)
 
@@ -379,26 +380,6 @@ int8_t is_snake_at(PosnType position) {
 	/* Snake does not occupy the given position */
 	return 0;
 }
-PosnType* get_snake_in_order(void){
-	PosnType snake_order[get_snake_length()]; 
-	if (get_snake_tail_position()> get_snake_head_position()){
-		//SSSH-------------------------TSSS
-		int a = 0; 
-		for (int i = get_snake_head_position(); i>=0; i--){
-			snake_order[a] = snakePositions[i]; 
-			a++;
-		}
-		for (int i = SNAKE_POSITION_ARRAY_SIZE-1; i>= get_snake_tail_position(); i--){
-			snake_order[a] = snakePositions[i];
-			a++;
-		}
-	}else{
-		//  ---TSSSSSSH----
-		for(int i =get_snake_tail_position(); i<=get_snake_head_position(); i++){
-			snake_order[i-get_snake_tail_position()] = snakePositions[i];
-		}
-	}
-	return snake_order;
-}
+
 
 		

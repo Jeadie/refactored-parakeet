@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #define F_CPU 8000000UL
-#include "avr/delay.h"
+#include "util/delay.h"
 #include <avr/pgmspace.h>
 #include "SuperFood.h"
 #include "rats.h"

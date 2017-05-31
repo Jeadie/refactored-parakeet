@@ -18,7 +18,7 @@ void next_buzzer_tone(void);
 void play_start_game_sound_effect(void);
 void play_eating_food_sound_effect(void);
 void play_end_game_sound_effect(void);
-
+void handle_buzzer_loop(void); 
 int last_tone_in_sequence(void);
 
 #endif /* BUZZER_H_ */

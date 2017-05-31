@@ -32,8 +32,14 @@ uint16_t high_score_position(void);
 void insert_into_EEPROM(char name[], int position);
 void set_high_score_name(void);
 void initialise_EEPROM(void);
-uint16_t EEPROM_has_been_initialised(void);
 void display_EEPROM_high_score(void);
+void handle_sequence_into_EEPROM(); 
+void move_place_down(uint16_t mem_position); 
+void move_four_place_down(void);
+void move_three_place_down(void);
+void move_two_place_down(void);
+void move_one_place_down(void);
+uint8_t EEPROM_High_Score_has_been_initialised(void);
 
 
 

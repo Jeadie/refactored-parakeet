@@ -23,13 +23,16 @@
 #define CLOCK_TICKS 0x208
 #define SNAKE_DIRECTION 0x218
 #define SNAKE_POSITION_TAIL 0x230
-
+#include "position.h"
+ 
 void save_game_to_EPPROM(void);
 uint8_t EEPROM_has_saved_game(void); 
 void new_game_from_EEPROM(void);
-// void load_food_from_EEPROM(void);
-// void load_rat_from_EEPROM(void);
-// void load_rat_from_superfood(void);
-// void load_snake_from_EPPROM(void);
+void load_food_from_EEPROM(void);
+void load_rat_from_EEPROM(PosnType rat_pos);
+void load_superfood_from_EEPROM(PosnType super_food);
+void add_food_to_board(PosnType food_pos);
+
+void load_snake_from_EPPROM(void);
 
 #endif /* EEPROM_GAME_SAVE_H_ */

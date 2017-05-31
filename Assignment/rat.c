@@ -16,6 +16,7 @@
 #include "SuperFood.h"
 #include <math.h>
 #include "rats.h"
+#include <stdlib.h>
 
 // TODO: make rat not collide with snake
 PosnType rat_position; 

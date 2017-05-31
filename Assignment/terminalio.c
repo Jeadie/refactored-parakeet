@@ -10,6 +10,7 @@
 #include <avr/pgmspace.h>
 #include "score.h"
 #include "terminalio.h"
+#include "EEPROM_HighScore.h"
 
 
 
@@ -116,5 +117,5 @@ void init_score_on_terminal(void){
 void update_terminal_score(void){
 	hide_cursor();
 	move_cursor(1, 3);
-	printf("Score: %8u", get_score());
+	printf("Score: %8lu", get_score());
 }
