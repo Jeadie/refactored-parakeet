@@ -5,9 +5,6 @@
  *  Author: Jack Eadie
  */ 
 
-//  TODO: figure out why high score isn't working 
-//  TODO: figure out why top level of score board is blank (everything is down by one). 
-//  TODO: not saving gamescore
 #include "rats.h"
 #include "SuperFood.h"
 #include "food.h"
@@ -44,14 +41,14 @@ typedef struct Game_Save_Data{
 
 
 uint8_t EEPROM_has_saved_game(void){
-	uint32_t current_signature = eeprom_read_dword(SAVE_GAME_SIGNATURE_MEMORY); 
+	uint32_t current_signature = eeprom_read_dword((uint32_t*) SAVE_GAME_SIGNATURE_MEMORY); 
 	return (current_signature == SAVE_GAME_SIGNATURE); 
 }
 
 void save_game_to_EPPROM(void){
 	cli();
 	// Save the Food Positions
-	eeprom_write_dword(SAVE_GAME_SIGNATURE_MEMORY, SAVE_GAME_SIGNATURE);
+	eeprom_write_dword((uint32_t*) SAVE_GAME_SIGNATURE_MEMORY, SAVE_GAME_SIGNATURE);
 	
 	struct Game_Save_Data new_saved_game; 
 	new_saved_game.food_one =get_position_of_food(0);
@@ -83,13 +80,13 @@ void save_game_to_EPPROM(void){
 		//printf("wrapped snake \n");
 		//SSSH-------------------------TSSS
 		for (int i = get_snake_tail_index(); i<=MAX_SNAKE_SIZE; i++){
-			eeprom_write_byte(current_snake_position_memory, 
+			eeprom_write_byte((uint8_t*)current_snake_position_memory, 
 							 get_snake_position_at_index(i));
 			//printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
 			current_snake_position_memory += 0x08;
 		}
 		for (int i = 0; i<= get_snake_head_index(); i++){
-			eeprom_write_byte(current_snake_position_memory,
+			eeprom_write_byte((uint8_t*)current_snake_position_memory,
 			get_snake_position_at_index(i));
 			//printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
 			current_snake_position_memory +=0x08;
@@ -98,7 +95,7 @@ void save_game_to_EPPROM(void){
 			//printf("straight Snake \n");
 		//  ---TSSSSSSH----
 		for(int i =get_snake_tail_index(); i<=get_snake_head_index(); i++){
-			eeprom_write_byte(current_snake_position_memory, get_snake_position_at_index(i));
+			eeprom_write_byte((uint8_t*)current_snake_position_memory, get_snake_position_at_index(i));
 			current_snake_position_memory +=0x08;
 			//printf("x: %u y: %u \n", x_position(get_snake_position_at_index(i)), y_position(get_snake_position_at_index(i)));
 			
@@ -106,7 +103,7 @@ void save_game_to_EPPROM(void){
 	}
 	
 	//  Add an invalid PosnType byte to signify the end of the snake positions. 
-	eeprom_write_byte(current_snake_position_memory,0x08);
+	eeprom_write_byte((uint8_t*)current_snake_position_memory,0x08);
 	//print_save_details();
 	sei();
 
@@ -179,14 +176,14 @@ void load_snake_from_EPPROM(void){
 	set_snake_head_pointer(get_snake_length() -1); 
 	do 
 	{
-		PosnType snake_position = eeprom_read_byte(snake_memory_position);
+		PosnType snake_position = eeprom_read_byte((uint8_t*)snake_memory_position);
 		//  printf("x: %u y: %u \n", x_position(snake_position), y_position(snake_position)); 
 		set_snake_position_in_array(snake_position, snakePosition_index); 
 		update_display_at_position(snake_position, COLOUR_GREEN);
 		snake_memory_position +=8; 
 		snakePosition_index ++; 
 		
-	} while (is_position_valid(eeprom_read_byte(snake_memory_position)));
+	} while (is_position_valid(eeprom_read_byte((uint8_t*)snake_memory_position)));
 	update_display_at_position(get_snake_head_position(), COLOUR_RED);
 
 }

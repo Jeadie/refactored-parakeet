@@ -13,8 +13,7 @@
 #include "timer1.h"
 #include "Buzzer.h"
 #include "timer0.h"
-// TODO: get buzzer sounds working continuously
-// TODO: add buzzer switch into configuration
+
 #define START_LENGTH 3
 uint16_t START_FREQ[START_LENGTH] = {5000, 2000, 5000};
 uint16_t START_DUR[START_LENGTH] = {500, 500, 500};
@@ -49,26 +48,26 @@ SoundEffect Start_tone;
 
 SoundEffect Start_tone=
 {
-	.buzzer_OCR1A = &START_FREQ,
-	.durations=  &START_DUR,
+	.buzzer_OCR1A = START_FREQ,
+	.durations=  START_DUR,
 	.length = START_LENGTH,
 };
 SoundEffect Eat_tone=
 {
-	.buzzer_OCR1A = &EAT_FREQ,
-	.durations=  &EAT_DUR,
+	.buzzer_OCR1A = EAT_FREQ,
+	.durations=  EAT_DUR,
 	.length = EAT_LENGTH,
 };
 SoundEffect Begin_tone=
 {
-	.buzzer_OCR1A = &BEGIN_FREQ,
-	.durations=  &BEGIN_DUR,
+	.buzzer_OCR1A = BEGIN_FREQ,
+	.durations=  BEGIN_DUR,
 	.length = BEGIN_LENGTH,
 };
 SoundEffect end_tone=
 {
-	.buzzer_OCR1A = &END_FREQ,
-	.durations=  &END_DUR,
+	.buzzer_OCR1A = END_FREQ,
+	.durations=  END_DUR,
 	.length = END_LENGTH,
 };
 

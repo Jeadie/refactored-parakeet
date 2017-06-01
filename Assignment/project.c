@@ -245,13 +245,9 @@ void play_game(void) {
 		}
 	}else if(serial_input == 'p' || serial_input == 'P') {
 			toggle_timer_clock();
-		// TODO: Check whether these are okay. in P says serial is ignored but these seem important
-		}else if(serial_input == 's'|| serial_input == 'S'){
-			save_game_to_EPPROM();
-		}else if(EEPROM_has_saved_game() && (serial_input == 'o' || serial_input == 'O')){
-			load_EEPROM_data_on_next_game = 1;
+		}else if(serial_input == 'n'|| serial_input == 'N'){
 			break;
-	}
+		}
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing
 		

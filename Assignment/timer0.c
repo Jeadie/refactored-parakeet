@@ -4,7 +4,6 @@
 #include "snake.h"
 #include "timer0.h"
 #include "Buzzer.h"
-
 #define F_CPU 8000000
 #include <util/delay.h>
 static volatile uint8_t unpaused_game = 1;
@@ -106,14 +105,18 @@ void display_SSD_value(void){
 	//  0 is 1's space.
 	
 	if (SSD_CC_value) {
+		DDRC = 0x00; 
 		PORTD |= (1<<2);
+		DDRC = 0xff; 
 		PORTC = seven_seg_for_tens[get_snake_length()/10];
+
 	}
 	else{
+		DDRC = 0x00; 
 		PORTD &= ~(1<<2);
+		DDRC = 0xff;		
 		PORTC = seven_seg_for_ones[get_snake_length()%10];
 	}
-	_delay_us(1);
 		
 	SSD_CC_value = 1-SSD_CC_value; 
 }
