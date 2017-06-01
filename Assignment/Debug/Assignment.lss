@@ -6737,7 +6737,7 @@ void display_SSD_value(void){
     24fe:	17 b8       	out	0x07, r1	; 7
 		PORTD &= ~(1<<2);
     2500:	5a 98       	cbi	0x0b, 2	; 11
-		DDRC = 0xff;
+		DDRC = 0xff;		
     2502:	8f ef       	ldi	r24, 0xFF	; 255
     2504:	87 b9       	out	0x07, r24	; 7
 		PORTC = seven_seg_for_ones[get_snake_length()%10];

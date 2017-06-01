@@ -114,7 +114,7 @@ void display_SSD_value(void){
 	else{
 		DDRC = 0x00; 
 		PORTD &= ~(1<<2);
-		DDRC = 0xff;
+		DDRC = 0xff;		
 		PORTC = seven_seg_for_ones[get_snake_length()%10];
 	}
 		
